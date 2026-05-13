@@ -3,809 +3,519 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ARCA — Considered Furniture</title>
+<title>IRONFORGE GYM — Forge Your Legacy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root {
-    --cream: #F4EFE6;
-    --warm-white: #FAF7F2;
-    --walnut: #2A1A0E;
-    --espresso: #3D2414;
-    --sand: #C9A97A;
-    --clay: #A0705A;
-    --sage: #7A8C6E;
-    --linen: #E8DFD0;
-    --charcoal: #4A3728;
-  }
+:root {
+  --red: #E8000D;
+  --red-dark: #B00008;
+  --red-glow: rgba(232,0,13,0.4);
+  --neon: #FF2D2D;
+  --neon-glow: rgba(255,45,45,0.6);
+  --black: #000000;
+  --dark: #0A0A0A;
+  --dark2: #111111;
+  --dark3: #1A1A1A;
+  --dark4: #222222;
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+  --white: #FFFFFF;
+  --gray: #888888;
+  --light-gray: #CCCCCC;
+  --gold: #FFD700;
+  --green: #00FF88;
+}
 
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#000;color:#fff;font-family:'Barlow',sans-serif;overflow-x:hidden;}
 
-  html { scroll-behavior: smooth; }
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#0a0a0a;}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px;}
 
-  body {
-    background: var(--cream);
-    color: var(--walnut);
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-  }
+/* NAVBAR */
+#navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:0 40px;transition:all 0.3s ease;background:transparent;}
+#navbar.scrolled{background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(232,0,13,0.3);padding:0 40px;}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px;}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;letter-spacing:3px;color:#fff;text-decoration:none;}
+.nav-logo span{color:var(--red);}
+.nav-links{display:flex;align-items:center;gap:30px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-weight:500;font-size:14px;letter-spacing:1px;text-transform:uppercase;transition:color 0.3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--red);transition:width 0.3s;}
+.nav-links a:hover{color:#fff;}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{background:var(--red);color:#fff!important;padding:10px 24px;border-radius:2px;font-weight:700!important;letter-spacing:2px;transition:all 0.3s!important;}
+.nav-cta:hover{background:var(--neon)!important;box-shadow:0 0 20px var(--neon-glow)!important;}
+.nav-cta::after{display:none!important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001;}
+.hamburger span{display:block;width:25px;height:2px;background:#fff;transition:all 0.3s;}
+.mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:#000;z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:30px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{color:#fff;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:700;letter-spacing:3px;text-transform:uppercase;transition:color 0.3s;}
+.mobile-menu a:hover{color:var(--red);}
 
-  /* ─── CURSOR ─── */
-  body { cursor: none; }
-  #cursor {
-    width: 10px; height: 10px;
-    background: var(--clay);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9999;
-    transition: transform .15s ease, background .2s;
-    mix-blend-mode: multiply;
-  }
-  #cursor-ring {
-    width: 36px; height: 36px;
-    border: 1px solid var(--clay);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9998;
-    transition: transform .35s cubic-bezier(.25,.46,.45,.94), opacity .2s;
-    opacity: .6;
-  }
-  a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2.5); }
+/* HERO */
+#hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#000 0%,#1a0000 40%,#0d0d0d 100%);}
+.hero-bg::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80') center/cover no-repeat;opacity:0.25;}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.9) 50%,rgba(0,0,0,0.3) 100%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,0,13,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(232,0,13,0.05) 1px,transparent 1px);background-size:60px 60px;animation:gridMove 20s linear infinite;}
+@keyframes gridMove{0%{background-position:0 0;}100%{background-position:60px 60px;}}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:900px;padding:0 20px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,0,13,0.15);border:1px solid rgba(232,0,13,0.4);padding:8px 20px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:30px;animation:fadeInDown 0.8s ease both;}
+.hero-badge i{font-size:10px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(60px,10vw,130px);font-weight:900;line-height:0.9;letter-spacing:-2px;text-transform:uppercase;animation:fadeInUp 0.8s ease 0.2s both;}
+.hero-title .line1{display:block;color:#fff;}
+.hero-title .line2{display:block;color:var(--red);text-shadow:0 0 40px var(--red-glow),0 0 80px rgba(232,0,13,0.2);}
+.hero-title .line3{display:block;color:#fff;font-style:italic;}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.6);letter-spacing:2px;text-transform:uppercase;margin:20px 0 40px;font-weight:300;animation:fadeInUp 0.8s ease 0.4s both;}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeInUp 0.8s ease 0.6s both;}
+.btn-primary{background:var(--red);color:#fff;padding:16px 40px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;position:relative;overflow:hidden;transition:all 0.3s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);text-decoration:none;display:inline-block;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%,rgba(255,255,255,0.2) 50%,transparent 100%);transform:translateX(-100%);transition:transform 0.5s;}
+.btn-primary:hover{background:var(--neon);box-shadow:0 0 30px var(--neon-glow),0 0 60px rgba(255,45,45,0.3);}
+.btn-primary:hover::before{transform:translateX(100%);}
+.btn-outline{background:transparent;color:#fff;padding:16px 40px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:3px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);text-decoration:none;display:inline-block;}
+.btn-outline:hover{border-color:var(--red);color:var(--red);box-shadow:0 0 20px var(--red-glow);}
+.hero-stats{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);display:flex;gap:60px;z-index:2;animation:fadeInUp 0.8s ease 0.8s both;}
+.hero-stat{text-align:center;}
+.hero-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:var(--red);line-height:1;}
+.hero-stat-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-top:4px;}
+.scroll-indicator{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:fadeIn 1s ease 1.2s both;}
+.scroll-indicator span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--red),transparent);animation:scrollAnim 2s ease-in-out infinite;}
+@keyframes scrollAnim{0%,100%{opacity:1;transform:scaleY(1);}50%{opacity:0.3;transform:scaleY(0.5);}}
 
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 24px 48px;
-    transition: background .4s, padding .4s;
-  }
-  nav.scrolled {
-    background: rgba(244,239,230,.92);
-    backdrop-filter: blur(12px);
-    padding: 16px 48px;
-    border-bottom: 1px solid var(--linen);
-  }
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px; font-weight: 300; letter-spacing: .18em;
-    color: var(--walnut); text-decoration: none;
-  }
-  .nav-links { display: flex; gap: 36px; list-style: none; }
-  .nav-links a {
-    text-decoration: none; color: var(--charcoal);
-    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
-    position: relative; padding-bottom: 2px;
-  }
-  .nav-links a::after {
-    content: ''; position: absolute; bottom: 0; left: 0;
-    width: 0; height: 1px; background: var(--clay);
-    transition: width .3s ease;
-  }
-  .nav-links a:hover::after { width: 100%; }
-  .nav-right { display: flex; align-items: center; gap: 24px; }
-  .cart-btn {
-    background: none; border: 1px solid var(--charcoal);
-    color: var(--charcoal); padding: 10px 24px;
-    font-family: 'Jost', sans-serif; font-weight: 400;
-    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    cursor: none; transition: background .25s, color .25s;
-  }
-  .cart-btn:hover { background: var(--walnut); color: var(--cream); border-color: var(--walnut); }
+/* ANIMATIONS */
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-30px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 
-  /* ─── HERO ─── */
-  .hero {
-    height: 100vh; min-height: 700px;
-    display: grid; grid-template-columns: 1fr 1fr;
-    position: relative; overflow: hidden;
-  }
-  .hero-left {
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 0 64px 80px;
-    background: var(--warm-white);
-    position: relative; z-index: 2;
-  }
-  .hero-eyebrow {
-    font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-    color: var(--clay); margin-bottom: 20px;
-    opacity: 0; animation: fadeUp .8s .3s forwards;
-  }
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(62px, 8vw, 108px);
-    font-weight: 300; line-height: .92; letter-spacing: -.01em;
-    color: var(--walnut);
-    opacity: 0; animation: fadeUp .9s .5s forwards;
-  }
-  .hero-title em { font-style: italic; color: var(--clay); }
-  .hero-desc {
-    margin-top: 28px; max-width: 340px;
-    font-size: 14px; line-height: 1.8; color: var(--charcoal);
-    opacity: 0; animation: fadeUp .8s .7s forwards;
-  }
-  .hero-cta {
-    margin-top: 40px; display: flex; gap: 16px; align-items: center;
-    opacity: 0; animation: fadeUp .8s .9s forwards;
-  }
-  .btn-primary {
-    display: inline-block; background: var(--walnut); color: var(--cream);
-    padding: 15px 40px; text-decoration: none;
-    font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-    transition: background .25s, transform .2s;
-  }
-  .btn-primary:hover { background: var(--espresso); transform: translateY(-1px); }
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 10px;
-    text-decoration: none; color: var(--charcoal);
-    font-size: 12px; letter-spacing: .1em;
-  }
-  .btn-ghost span { width: 40px; height: 1px; background: currentColor; }
+/* SECTION STYLES */
+.section{padding:100px 0;}
+.container{max-width:1300px;margin:0 auto;padding:0 40px;}
+.section-header{text-align:center;margin-bottom:70px;}
+.section-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:16px;position:relative;}
+.section-tag::before,.section-tag::after{content:'—';margin:0 8px;opacity:0.5;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(40px,5vw,70px);font-weight:900;text-transform:uppercase;line-height:1;color:#fff;}
+.section-title span{color:var(--red);}
+.section-sub{color:rgba(255,255,255,0.5);font-size:16px;margin-top:16px;max-width:500px;margin-left:auto;margin-right:auto;}
+.reveal{opacity:0;transform:translateY(40px);transition:all 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
 
-  .hero-right {
-    position: relative; overflow: hidden;
-  }
-  .hero-img {
-    width: 100%; height: 100%; object-fit: cover;
-    transform: scale(1.08);
-    animation: heroZoom 1.4s .1s cubic-bezier(.25,.46,.45,.94) forwards;
-  }
-  .hero-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(160deg, transparent 60%, rgba(42,26,14,.3));
-  }
-  .hero-badge {
-    position: absolute; bottom: 60px; left: -32px;
-    background: var(--sand); color: var(--walnut);
-    width: 120px; height: 120px; border-radius: 50%;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    animation: spin 18s linear infinite;
-    z-index: 5;
-  }
-  .hero-badge-inner {
-    position: absolute; inset: 0;
-    animation: spin 18s linear infinite reverse;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-  }
-  .hero-badge-inner .num { font-size: 28px; font-weight: 600; line-height: 1; }
-  .hero-badge-inner .sub { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
-  .hero-scroll {
-    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--charcoal);
-    opacity: 0; animation: fadeIn 1s 1.5s forwards;
-  }
-  .scroll-line {
-    width: 1px; height: 50px; background: var(--clay);
-    animation: scrollLine 1.5s 2s infinite;
-  }
+/* MARQUEE */
+.marquee-section{background:var(--red);padding:16px 0;overflow:hidden;position:relative;z-index:10;}
+.marquee-track{display:flex;gap:60px;animation:marquee 20s linear infinite;white-space:nowrap;}
+.marquee-track span{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:16px;}
+.marquee-track span i{font-size:12px;opacity:0.7;}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%)}}
 
-  /* ─── MARQUEE ─── */
-  .marquee-section {
-    background: var(--walnut); padding: 18px 0; overflow: hidden;
-  }
-  .marquee-track {
-    display: flex; gap: 60px; width: max-content;
-    animation: marquee 22s linear infinite;
-  }
-  .marquee-item {
-    display: flex; align-items: center; gap: 60px;
-    white-space: nowrap;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px; font-weight: 300; letter-spacing: .1em;
-    color: var(--sand);
-  }
-  .marquee-dot { width: 5px; height: 5px; background: var(--clay); border-radius: 50%; flex-shrink: 0; }
+/* PROGRAMS */
+#programs{background:var(--dark);}
+.programs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.program-card{position:relative;overflow:hidden;aspect-ratio:4/5;cursor:pointer;}
+.program-card img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:brightness(0.5) saturate(0.8);}
+.program-card:hover img{transform:scale(1.08);filter:brightness(0.3) saturate(1);}
+.program-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.95) 0%,transparent 60%);transition:all 0.4s;}
+.program-card:hover .program-overlay{background:linear-gradient(to top,rgba(232,0,13,0.8) 0%,rgba(0,0,0,0.5) 100%);}
+.program-content{position:absolute;bottom:0;left:0;right:0;padding:30px;transform:translateY(20px);transition:transform 0.4s;}
+.program-card:hover .program-content{transform:translateY(0);}
+.program-icon{font-size:32px;color:var(--red);margin-bottom:12px;display:block;transition:color 0.3s;}
+.program-card:hover .program-icon{color:#fff;}
+.program-name{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#fff;}
+.program-desc{font-size:13px;color:rgba(255,255,255,0.7);margin-top:8px;line-height:1.6;max-height:0;overflow:hidden;transition:max-height 0.4s;}
+.program-card:hover .program-desc{max-height:100px;}
+.program-tag{display:inline-block;background:var(--red);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;margin-top:12px;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);}
 
-  /* ─── SECTION HEADERS ─── */
-  .section-label {
-    font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-    color: var(--clay); margin-bottom: 16px;
-  }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(38px, 5vw, 64px);
-    font-weight: 300; line-height: 1.1;
-    color: var(--walnut);
-  }
-  .section-title em { font-style: italic; }
+/* TRAINERS */
+#trainers{background:var(--black);}
+.trainers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.trainer-card{background:var(--dark3);border:1px solid var(--glass-border);overflow:hidden;position:relative;transition:all 0.4s;group:;}
+.trainer-card:hover{border-color:rgba(232,0,13,0.4);transform:translateY(-8px);box-shadow:0 20px 60px rgba(232,0,13,0.15);}
+.trainer-img-wrap{position:relative;overflow:hidden;aspect-ratio:3/4;}
+.trainer-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform 0.6s;filter:grayscale(20%);}
+.trainer-card:hover .trainer-img-wrap img{transform:scale(1.05);filter:grayscale(0%);}
+.trainer-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,transparent 50%);}
+.trainer-socials{position:absolute;top:16px;right:16px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateX(20px);transition:all 0.3s;}
+.trainer-card:hover .trainer-socials{opacity:1;transform:translateX(0);}
+.trainer-socials a{width:36px;height:36px;background:rgba(0,0,0,0.8);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;text-decoration:none;transition:all 0.3s;}
+.trainer-socials a:hover{background:var(--red);border-color:var(--red);}
+.trainer-spec{position:absolute;bottom:80px;left:16px;background:var(--red);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;}
+.trainer-info{padding:20px;}
+.trainer-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;text-transform:uppercase;color:#fff;}
+.trainer-role{font-size:12px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.trainer-meta{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--glass-border);}
+.trainer-rating{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--gold);}
+.trainer-exp{font-size:12px;color:rgba(255,255,255,0.5);}
+.trainer-certs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.cert-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border:1px solid rgba(232,0,13,0.4);color:rgba(232,0,13,0.8);}
 
-  /* ─── COLLECTIONS ─── */
-  .collections { padding: 120px 64px; }
-  .collections-header {
-    display: flex; justify-content: space-between; align-items: flex-end;
-    margin-bottom: 64px;
-  }
-  .view-all {
-    display: flex; align-items: center; gap: 12px;
-    text-decoration: none; color: var(--charcoal);
-    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
-  }
-  .view-all .arrow { transition: transform .25s; }
-  .view-all:hover .arrow { transform: translateX(6px); }
+/* MEMBERSHIP */
+#membership{background:linear-gradient(180deg,#000 0%,#0d0000 50%,#000 100%);}
+.pricing-toggle{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:50px;}
+.toggle-label{font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+.toggle-label.active{color:#fff;}
+.toggle-switch{width:60px;height:30px;background:var(--dark3);border:1px solid rgba(255,255,255,0.1);border-radius:15px;position:relative;cursor:pointer;transition:all 0.3s;}
+.toggle-switch.yearly{background:var(--red);}
+.toggle-knob{position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:all 0.3s;}
+.toggle-switch.yearly .toggle-knob{left:33px;}
+.save-badge{background:var(--red);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:100px;margin-left:8px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto;}
+.pricing-card{background:var(--dark3);border:1px solid var(--glass-border);padding:40px;position:relative;overflow:hidden;transition:all 0.4s;}
+.pricing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--glass-border);}
+.pricing-card.popular{border-color:rgba(232,0,13,0.5);transform:scale(1.05);}
+.pricing-card.popular::before{background:var(--red);}
+.pricing-card:hover{border-color:rgba(232,0,13,0.4);box-shadow:0 20px 60px rgba(232,0,13,0.1);}
+.popular-badge{position:absolute;top:20px;right:20px;background:var(--red);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
+.plan-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red);}
+.plan-price{margin:20px 0;}
+.plan-price .currency{font-size:24px;font-weight:700;color:#fff;vertical-align:top;margin-top:8px;}
+.plan-price .amount{font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:900;color:#fff;line-height:1;}
+.plan-price .period{font-size:14px;color:rgba(255,255,255,0.4);margin-left:4px;}
+.plan-desc{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--glass-border);}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:32px;}
+.plan-features li{display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,0.7);}
+.plan-features li i{color:var(--red);font-size:12px;flex-shrink:0;}
+.plan-features li.disabled{color:rgba(255,255,255,0.25);}
+.plan-features li.disabled i{color:rgba(255,255,255,0.15);}
+.plan-btn{width:100%;padding:14px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:3px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.2);background:transparent;color:#fff;cursor:pointer;transition:all 0.3s;}
+.plan-btn:hover,.pricing-card.popular .plan-btn{background:var(--red);border-color:var(--red);box-shadow:0 0 20px var(--red-glow);}
 
-  .collections-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 3px;
-  }
-  .col-card {
-    position: relative; overflow: hidden;
-    background: var(--linen);
-  }
-  .col-card:first-child {
-    grid-row: 1 / 3;
-  }
-  .col-card img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform .7s cubic-bezier(.25,.46,.45,.94);
-    display: block;
-  }
-  .col-card:first-child img { min-height: 580px; }
-  .col-card:not(:first-child) img { min-height: 280px; }
-  .col-card:hover img { transform: scale(1.06); }
-  .col-info {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 28px 28px 24px;
-    background: linear-gradient(transparent, rgba(42,26,14,.75));
-    color: var(--cream); transform: translateY(8px);
-    transition: transform .3s;
-  }
-  .col-card:hover .col-info { transform: translateY(0); }
-  .col-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 300; letter-spacing: .06em;
-    margin-bottom: 4px;
-  }
-  .col-count { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+/* BMI CALCULATOR */
+#bmi{background:var(--dark2);}
+.bmi-wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.bmi-form{background:var(--dark3);border:1px solid var(--glass-border);padding:40px;}
+.bmi-form h3{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;text-transform:uppercase;margin-bottom:8px;}
+.bmi-form p{color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:30px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-group label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+.form-group input,.form-group select{background:var(--dark4);border:1px solid var(--glass-border);color:#fff;padding:14px 16px;font-family:'Barlow',sans-serif;font-size:16px;outline:none;transition:border-color 0.3s;}
+.form-group input:focus,.form-group select:focus{border-color:var(--red);}
+.form-group select option{background:#222;}
+.gender-btns{display:flex;gap:8px;}
+.gender-btn{flex:1;padding:14px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--dark4);border:1px solid var(--glass-border);color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.3s;}
+.gender-btn.active{background:var(--red);border-color:var(--red);color:#fff;}
+.bmi-calc-btn{width:100%;padding:16px;background:var(--red);border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:all 0.3s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);}
+.bmi-calc-btn:hover{background:var(--neon);box-shadow:0 0 30px var(--neon-glow);}
+.bmi-result{background:var(--dark3);border:1px solid var(--glass-border);padding:40px;display:none;}
+.bmi-result.show{display:block;}
+.bmi-number-wrap{text-align:center;margin-bottom:30px;}
+.bmi-number{font-family:'Barlow Condensed',sans-serif;font-size:100px;font-weight:900;color:var(--red);line-height:1;}
+.bmi-category{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#fff;margin-top:8px;}
+.bmi-bar-wrap{margin-bottom:30px;}
+.bmi-bar{height:8px;background:linear-gradient(to right,#00bfff,#00ff88,#ffd700,#ff6600,#ff0000);border-radius:4px;position:relative;margin-bottom:8px;}
+.bmi-marker{position:absolute;top:-6px;width:4px;height:20px;background:#fff;border-radius:2px;transform:translateX(-50%);transition:left 0.5s ease;}
+.bmi-labels{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:1px;}
+.bmi-recommend h4{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--red);margin-bottom:16px;}
+.bmi-recommend ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.bmi-recommend li{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.7);}
+.bmi-recommend li i{color:var(--red);}
+.bmi-info-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px;}
+.bmi-info-card{background:var(--dark3);border:1px solid var(--glass-border);padding:20px;text-align:center;}
+.bmi-info-card .val{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;color:var(--red);}
+.bmi-info-card .lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:4px;}
 
-  /* ─── FEATURED PRODUCT ─── */
-  .featured {
-    display: grid; grid-template-columns: 1fr 1fr;
-    min-height: 600px; margin: 3px 0;
-  }
-  .featured-visual {
-    background: var(--linen); position: relative; overflow: hidden;
-  }
-  .featured-visual img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform .8s ease;
-  }
-  .featured:hover .featured-visual img { transform: scale(1.04); }
-  .featured-tag {
-    position: absolute; top: 32px; left: 32px;
-    background: var(--sage); color: white;
-    font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
-    padding: 6px 14px;
-  }
-  .featured-content {
-    background: var(--walnut); color: var(--cream);
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 80px;
-  }
-  .featured-content .section-label { color: var(--sand); }
-  .featured-content .section-title { color: var(--cream); }
-  .featured-desc {
-    margin-top: 24px; font-size: 14px; line-height: 1.85;
-    color: rgba(244,239,230,.7); max-width: 360px;
-  }
-  .featured-price {
-    margin-top: 36px;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 42px; font-weight: 300; color: var(--sand);
-  }
-  .featured-actions { margin-top: 32px; display: flex; gap: 16px; }
-  .btn-sand {
-    background: var(--sand); color: var(--walnut);
-    padding: 14px 36px; text-decoration: none;
-    font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-    transition: background .25s;
-    border: none; font-family: 'Jost', sans-serif; cursor: none;
-  }
-  .btn-sand:hover { background: #D4B07A; }
-  .btn-outline-cream {
-    background: transparent; color: var(--cream);
-    border: 1px solid rgba(244,239,230,.35);
-    padding: 14px 30px; text-decoration: none;
-    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    transition: border-color .25s, background .25s;
-    cursor: none; font-family: 'Jost', sans-serif;
-  }
-  .btn-outline-cream:hover { border-color: var(--cream); background: rgba(244,239,230,.08); }
+/* TRANSFORMATION GALLERY */
+#transformations{background:#000;}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.transform-card{position:relative;overflow:hidden;cursor:pointer;}
+.transform-imgs{display:flex;position:relative;overflow:hidden;}
+.before-after-slider{position:relative;overflow:hidden;aspect-ratio:3/4;}
+.before-after-slider .before-img,.before-after-slider .after-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:clip-path 0.5s ease;}
+.before-after-slider .before-img{clip-path:inset(0 50% 0 0);}
+.before-after-slider .after-img{clip-path:inset(0 0 0 50%);}
+.transform-card:hover .before-img{clip-path:inset(0 100% 0 0);}
+.transform-card:hover .after-img{clip-path:inset(0 0 0 0%);}
+.before-label,.after-label{position:absolute;top:16px;z-index:2;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;pointer-events:none;}
+.before-label{left:16px;background:rgba(0,0,0,0.8);color:rgba(255,255,255,0.7);}
+.after-label{right:16px;background:var(--red);color:#fff;}
+.transform-info{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.95) 0%,transparent 100%);padding:20px;transform:translateY(20px);transition:transform 0.4s;}
+.transform-card:hover .transform-info{transform:translateY(0);}
+.transform-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;text-transform:uppercase;color:#fff;}
+.transform-stats{display:flex;gap:16px;margin-top:8px;}
+.transform-stat{font-size:11px;color:rgba(255,255,255,0.6);}
+.transform-stat strong{color:var(--red);}
 
-  /* ─── PRODUCTS ─── */
-  .products { padding: 120px 64px; background: var(--warm-white); }
-  .products-header { margin-bottom: 56px; }
-  .filter-tabs {
-    display: flex; gap: 4px; margin-top: 32px;
-  }
-  .filter-tab {
-    background: none; border: 1px solid transparent;
-    padding: 9px 22px; font-family: 'Jost', sans-serif;
-    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--charcoal); cursor: none; transition: all .25s;
-  }
-  .filter-tab.active { border-color: var(--walnut); background: var(--walnut); color: var(--cream); }
-  .filter-tab:hover:not(.active) { border-color: var(--linen); }
+/* TESTIMONIALS */
+#testimonials{background:var(--dark);}
+.testimonials-wrap{position:relative;overflow:hidden;}
+.testimonials-track{display:flex;gap:24px;transition:transform 0.5s ease;}
+.testimonial-card{min-width:380px;background:var(--dark3);border:1px solid var(--glass-border);padding:32px;position:relative;flex-shrink:0;}
+.testimonial-card::before{content:'"';position:absolute;top:16px;right:24px;font-family:Georgia,serif;font-size:80px;color:rgba(232,0,13,0.15);line-height:1;}
+.testimonial-stars{display:flex;gap:4px;color:var(--gold);font-size:14px;margin-bottom:16px;}
+.testimonial-text{font-size:15px;color:rgba(255,255,255,0.75);line-height:1.7;margin-bottom:24px;}
+.testimonial-author{display:flex;align-items:center;gap:14px;}
+.testimonial-avatar{width:50px;height:50px;border-radius:50%;border:2px solid var(--red);object-fit:cover;}
+.testimonial-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;color:#fff;}
+.testimonial-plan{font-size:12px;color:var(--red);letter-spacing:1px;text-transform:uppercase;}
+.testimonial-controls{display:flex;gap:12px;margin-top:40px;justify-content:center;}
+.t-btn{width:48px;height:48px;background:var(--dark3);border:1px solid var(--glass-border);color:#fff;cursor:pointer;font-size:18px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;}
+.t-btn:hover{background:var(--red);border-color:var(--red);}
 
-  .products-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
-  }
-  .product-card { background: var(--cream); }
-  .product-img {
-    position: relative; overflow: hidden; aspect-ratio: 3/4;
-    background: var(--linen);
-  }
-  .product-img img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform .6s cubic-bezier(.25,.46,.45,.94);
-  }
-  .product-card:hover .product-img img { transform: scale(1.07); }
-  .product-img-overlay {
-    position: absolute; inset: 0;
-    display: flex; align-items: flex-end; justify-content: center;
-    padding-bottom: 24px;
-    opacity: 0; transition: opacity .3s;
-    background: rgba(42,26,14,.1);
-  }
-  .product-card:hover .product-img-overlay { opacity: 1; }
-  .quick-add {
-    background: var(--cream); color: var(--walnut);
-    border: none; padding: 12px 28px;
-    font-family: 'Jost', sans-serif;
-    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    cursor: none; transition: background .2s;
-    transform: translateY(6px); transition: transform .3s, opacity .3s;
-    opacity: 0;
-  }
-  .product-card:hover .quick-add { transform: translateY(0); opacity: 1; }
-  .quick-add:hover { background: var(--linen); }
+/* SUPPLEMENTS */
+#supplements{background:var(--dark2);}
+.supps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.supp-card{background:var(--dark3);border:1px solid var(--glass-border);overflow:hidden;transition:all 0.4s;}
+.supp-card:hover{border-color:rgba(232,0,13,0.4);transform:translateY(-6px);}
+.supp-img{position:relative;padding:30px;background:linear-gradient(135deg,#1a1a1a,#0d0d0d);aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
+.supp-img img{max-width:80%;max-height:180px;object-fit:contain;transition:transform 0.4s;}
+.supp-card:hover .supp-img img{transform:scale(1.1);}
+.supp-badge{position:absolute;top:12px;left:12px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;}
+.supp-badge.new{background:var(--green);color:#000;}
+.supp-badge.sale{background:var(--red);color:#fff;}
+.supp-body{padding:20px;}
+.supp-cat{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px;}
+.supp-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;color:#fff;line-height:1.2;}
+.supp-price{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff;margin:10px 0;}
+.supp-price .old{font-size:14px;color:rgba(255,255,255,0.3);text-decoration:line-through;margin-left:8px;font-weight:400;}
+.supp-add{width:100%;padding:12px;background:transparent;border:1px solid rgba(232,0,13,0.4);color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
+.supp-add:hover{background:var(--red);border-color:var(--red);color:#fff;}
 
-  .product-badge {
-    position: absolute; top: 16px; right: 16px;
-    background: var(--clay); color: white;
-    font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
-    padding: 4px 10px;
-  }
-  .product-info { padding: 20px 20px 28px; }
-  .product-category {
-    font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--clay); margin-bottom: 6px;
-  }
-  .product-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px; font-weight: 300; letter-spacing: .04em;
-    color: var(--walnut); margin-bottom: 10px;
-  }
-  .product-pricing { display: flex; align-items: baseline; gap: 12px; }
-  .product-price {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 300; color: var(--walnut);
-  }
-  .product-old-price {
-    font-size: 14px; color: var(--clay); text-decoration: line-through; opacity: .6;
-  }
-  .product-rating {
-    display: flex; gap: 3px; margin-top: 10px;
-  }
-  .star { color: var(--sand); font-size: 12px; }
+/* STORE */
+#store{background:#000;}
+.store-header-wrap{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;}
+.store-cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px;}
+.store-cat-btn{padding:10px 22px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--dark3);border:1px solid var(--glass-border);color:rgba(255,255,255,0.6);cursor:pointer;transition:all 0.3s;}
+.store-cat-btn.active,.store-cat-btn:hover{background:var(--red);border-color:var(--red);color:#fff;}
+.store-banner{background:linear-gradient(135deg,var(--red-dark),var(--red));padding:24px 32px;margin-bottom:40px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;}
+.store-banner::before{content:'SALE';position:absolute;right:-20px;top:-20px;font-family:'Barlow Condensed',sans-serif;font-size:120px;font-weight:900;color:rgba(255,255,255,0.05);}
+.store-banner-text h3{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;color:#fff;}
+.store-banner-text p{color:rgba(255,255,255,0.8);font-size:14px;margin-top:4px;}
+.discount-code{background:rgba(0,0,0,0.3);border:2px dashed rgba(255,255,255,0.4);padding:8px 20px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:4px;color:#fff;}
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.product-card{background:var(--dark3);border:1px solid var(--glass-border);overflow:hidden;position:relative;transition:all 0.4s;cursor:pointer;}
+.product-card:hover{border-color:rgba(232,0,13,0.5);transform:translateY(-6px);box-shadow:0 20px 40px rgba(232,0,13,0.1);}
+.product-img-wrap{position:relative;overflow:hidden;padding:24px;background:var(--dark2);aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
+.product-img-wrap img{max-width:85%;max-height:200px;object-fit:contain;transition:transform 0.4s;}
+.product-card:hover .product-img-wrap img{transform:scale(1.1);}
+.product-actions{position:absolute;bottom:10px;left:50%;transform:translateX(-50%) translateY(20px);display:flex;gap:8px;opacity:0;transition:all 0.3s;white-space:nowrap;}
+.product-card:hover .product-actions{opacity:1;transform:translateX(-50%) translateY(0);}
+.prod-act-btn{padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all 0.3s;}
+.prod-act-btn.cart{background:var(--red);color:#fff;}
+.prod-act-btn.wish{background:rgba(0,0,0,0.8);border:1px solid rgba(255,255,255,0.2);color:#fff;}
+.prod-act-btn:hover{filter:brightness(1.2);}
+.product-tag{position:absolute;top:12px;left:12px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;z-index:2;}
+.product-tag.bestseller{background:var(--gold);color:#000;}
+.product-tag.new{background:var(--green);color:#000;}
+.product-tag.sale{background:var(--red);color:#fff;}
+.product-wish-icon{position:absolute;top:12px;right:12px;width:32px;height:32px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;z-index:2;}
+.product-wish-icon:hover,.product-wish-icon.active{background:var(--red);border-color:var(--red);color:var(--red);}
+.product-wish-icon i{color:#fff;font-size:14px;}
+.product-info{padding:16px;}
+.product-cat{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:4px;}
+.product-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;color:#fff;line-height:1.2;}
+.product-rating{display:flex;align-items:center;gap:6px;margin:8px 0;}
+.product-rating .stars{color:var(--gold);font-size:12px;}
+.product-rating .count{font-size:11px;color:rgba(255,255,255,0.4);}
+.product-price-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.product-price{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff;}
+.product-price .orig{font-size:14px;color:rgba(255,255,255,0.3);text-decoration:line-through;margin-left:6px;font-weight:400;}
+.add-cart-btn{padding:10px 18px;background:var(--red);border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
+.add-cart-btn:hover{background:var(--neon);box-shadow:0 0 15px var(--neon-glow);}
 
-  /* ─── CRAFT SECTION ─── */
-  .craft {
-    display: grid; grid-template-columns: 1fr 1fr;
-    background: var(--walnut); color: var(--cream);
-  }
-  .craft-visual {
-    position: relative; overflow: hidden; min-height: 560px;
-  }
-  .craft-visual img { width: 100%; height: 100%; object-fit: cover; opacity: .7; }
-  .craft-visual-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to right, transparent 40%, var(--walnut));
-  }
-  .craft-content {
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 80px 80px 80px 64px;
-  }
-  .craft-content .section-label { color: var(--sand); }
-  .craft-content .section-title { color: var(--cream); }
-  .craft-body {
-    margin-top: 28px; font-size: 14px; line-height: 1.9;
-    color: rgba(244,239,230,.65); max-width: 400px;
-  }
-  .craft-stats {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
-    margin-top: 48px;
-  }
-  .craft-stat {}
-  .craft-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 48px; font-weight: 300; color: var(--sand); line-height: 1;
-  }
-  .craft-label {
-    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    color: rgba(244,239,230,.5); margin-top: 6px;
-  }
+/* CART SIDEBAR */
+#cart-sidebar{position:fixed;top:0;right:-420px;width:420px;height:100vh;background:var(--dark2);border-left:1px solid var(--glass-border);z-index:2000;transition:right 0.4s ease;display:flex;flex-direction:column;overflow:hidden;}
+#cart-sidebar.open{right:0;}
+.cart-header{padding:24px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-between;}
+.cart-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:2px;}
+.cart-close{background:none;border:none;color:#fff;font-size:24px;cursor:pointer;transition:color 0.3s;}
+.cart-close:hover{color:var(--red);}
+.cart-items{flex:1;overflow-y:auto;padding:20px;}
+.cart-empty{text-align:center;padding:60px 20px;color:rgba(255,255,255,0.3);}
+.cart-empty i{font-size:60px;margin-bottom:16px;display:block;}
+.cart-empty p{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:2px;}
+.cart-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--glass-border);}
+.cart-item-img{width:70px;height:70px;background:var(--dark3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cart-item-img img{max-width:60px;max-height:60px;object-fit:contain;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;color:#fff;}
+.cart-item-price{font-size:14px;color:var(--red);font-weight:600;margin-top:4px;}
+.cart-item-qty{display:flex;align-items:center;gap:10px;margin-top:8px;}
+.qty-btn{width:26px;height:26px;background:var(--dark3);border:1px solid var(--glass-border);color:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.qty-btn:hover{background:var(--red);border-color:var(--red);}
+.qty-val{font-size:16px;font-weight:600;min-width:20px;text-align:center;}
+.cart-item-remove{background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:16px;transition:color 0.3s;align-self:flex-start;margin-left:auto;}
+.cart-item-remove:hover{color:var(--red);}
+.cart-footer{padding:24px;border-top:1px solid var(--glass-border);}
+.cart-subtotal{display:flex;justify-content:space-between;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;margin-bottom:16px;}
+.cart-subtotal .amount{color:var(--red);}
+.checkout-btn{width:100%;padding:16px;background:var(--red);border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
+.checkout-btn:hover{background:var(--neon);box-shadow:0 0 20px var(--neon-glow);}
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1999;display:none;}
+.cart-overlay.show{display:block;}
+.cart-count{position:absolute;top:-8px;right:-8px;background:var(--red);color:#fff;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.cart-icon-wrap{position:relative;cursor:pointer;}
 
-  /* ─── TESTIMONIALS ─── */
-  .testimonials { padding: 100px 64px; background: var(--cream); }
-  .testimonials-header { text-align: center; margin-bottom: 64px; }
-  .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
-  .testimonial-card {
-    background: var(--warm-white);
-    padding: 48px 40px;
-    position: relative; border-top: 2px solid var(--linen);
-    transition: border-color .3s;
-  }
-  .testimonial-card:hover { border-color: var(--sand); }
-  .quote-mark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 72px; font-weight: 300; color: var(--linen);
-    line-height: 1; position: absolute; top: 24px; left: 32px;
-  }
-  .testimonial-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 19px; font-weight: 300; font-style: italic;
-    line-height: 1.7; color: var(--walnut);
-    margin-top: 24px; position: relative; z-index: 1;
-  }
-  .testimonial-author {
-    margin-top: 28px; display: flex; align-items: center; gap: 14px;
-  }
-  .author-avatar {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: var(--linen); overflow: hidden; flex-shrink: 0;
-  }
-  .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .author-name {
-    font-size: 13px; font-weight: 500; letter-spacing: .06em; color: var(--walnut);
-  }
-  .author-location { font-size: 11px; letter-spacing: .1em; color: var(--clay); margin-top: 2px; }
+/* FEATURED CAROUSEL */
+.featured-carousel{position:relative;overflow:hidden;margin-bottom:50px;}
+.carousel-track{display:flex;gap:20px;transition:transform 0.5s ease;}
+.carousel-slide{min-width:280px;background:var(--dark3);border:1px solid var(--glass-border);overflow:hidden;flex-shrink:0;}
+.carousel-controls{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
+.carousel-btn{width:40px;height:40px;background:var(--dark3);border:1px solid var(--glass-border);color:#fff;cursor:pointer;font-size:16px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;}
+.carousel-btn:hover{background:var(--red);border-color:var(--red);}
 
-  /* ─── NEWSLETTER ─── */
-  .newsletter {
-    background: var(--sand); padding: 90px 64px;
-    display: flex; justify-content: space-between; align-items: center; gap: 48px;
-  }
-  .newsletter-left {}
-  .newsletter-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(32px, 4vw, 52px); font-weight: 300;
-    color: var(--walnut); line-height: 1.1;
-  }
-  .newsletter-sub {
-    margin-top: 12px; font-size: 14px; color: var(--espresso); opacity: .75;
-  }
-  .newsletter-form {
-    display: flex; gap: 0; flex: 1; max-width: 440px;
-  }
-  .newsletter-input {
-    flex: 1; background: rgba(255,255,255,.5); border: 1px solid rgba(42,26,14,.2);
-    border-right: none; padding: 15px 20px;
-    font-family: 'Jost', sans-serif; font-size: 13px; color: var(--walnut);
-    outline: none;
-  }
-  .newsletter-input::placeholder { color: rgba(42,26,14,.4); }
-  .newsletter-input:focus { background: rgba(255,255,255,.8); }
-  .btn-walnut {
-    background: var(--walnut); color: var(--cream); border: none;
-    padding: 15px 28px; font-family: 'Jost', sans-serif;
-    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
-    cursor: none; transition: background .25s;
-  }
-  .btn-walnut:hover { background: var(--espresso); }
+/* FOOTER */
+#footer{background:#000;border-top:1px solid rgba(232,0,13,0.3);}
+.footer-main{padding:80px 0 40px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}
+.footer-brand .logo{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;letter-spacing:3px;color:#fff;margin-bottom:16px;}
+.footer-brand .logo span{color:var(--red);}
+.footer-brand p{font-size:14px;color:rgba(255,255,255,0.4);line-height:1.7;margin-bottom:24px;}
+.footer-socials{display:flex;gap:10px;}
+.social-link{width:40px;height:40px;background:var(--dark3);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:16px;transition:all 0.3s;}
+.social-link:hover{background:var(--red);border-color:var(--red);transform:translateY(-3px);}
+.footer-col h4{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;margin-bottom:20px;position:relative;padding-bottom:12px;}
+.footer-col h4::after{content:'';position:absolute;bottom:0;left:0;width:30px;height:2px;background:var(--red);}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul li a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:14px;transition:color 0.3s;display:flex;align-items:center;gap:8px;}
+.footer-col ul li a:hover{color:var(--red);}
+.footer-col ul li a i{font-size:12px;opacity:0.5;}
+.footer-hours{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.footer-hours li{display:flex;justify-content:space-between;font-size:13px;color:rgba(255,255,255,0.4);padding-bottom:8px;border-bottom:1px solid var(--glass-border);}
+.footer-hours li span:last-child{color:var(--green);}
+.footer-bottom{border-top:1px solid var(--glass-border);padding:24px 0;}
+.footer-bottom-inner{display:flex;align-items:center;justify-content:space-between;}
+.footer-bottom p{font-size:13px;color:rgba(255,255,255,0.3);}
+.footer-bottom p span{color:var(--red);}
 
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--walnut); color: rgba(244,239,230,.6);
-    padding: 72px 64px 40px;
-  }
-  .footer-top {
-    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr;
-    gap: 48px; margin-bottom: 60px;
-  }
-  .footer-brand {}
-  .footer-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px; font-weight: 300; letter-spacing: .18em;
-    color: var(--cream); margin-bottom: 18px;
-  }
-  .footer-tagline { font-size: 13px; line-height: 1.8; max-width: 240px; }
-  .footer-socials { display: flex; gap: 16px; margin-top: 28px; }
-  .social-btn {
-    width: 38px; height: 38px; border: 1px solid rgba(244,239,230,.2);
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(244,239,230,.6); text-decoration: none; font-size: 13px;
-    transition: border-color .25s, color .25s;
-  }
-  .social-btn:hover { border-color: var(--sand); color: var(--sand); }
-  .footer-col h4 {
-    font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--cream); margin-bottom: 20px; font-weight: 400;
-  }
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
-  .footer-col ul a {
-    text-decoration: none; color: rgba(244,239,230,.5);
-    font-size: 13px; transition: color .25s;
-  }
-  .footer-col ul a:hover { color: var(--sand); }
-  .footer-bottom {
-    border-top: 1px solid rgba(244,239,230,.1);
-    padding-top: 28px; display: flex; justify-content: space-between; align-items: center;
-    font-size: 12px;
-  }
-  .footer-legal { display: flex; gap: 24px; }
-  .footer-legal a {
-    text-decoration: none; color: rgba(244,239,230,.4);
-    transition: color .25s; font-size: 11px; letter-spacing: .08em;
-  }
-  .footer-legal a:hover { color: var(--sand); }
+/* CHECKOUT MODAL */
+#checkout-modal{position:fixed;inset:0;z-index:3000;display:none;align-items:center;justify-content:center;}
+#checkout-modal.open{display:flex;}
+.checkout-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.85);}
+.checkout-box{position:relative;background:var(--dark2);border:1px solid rgba(232,0,13,0.3);width:90%;max-width:600px;max-height:90vh;overflow-y:auto;padding:40px;z-index:1;}
+.checkout-box h2{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:900;text-transform:uppercase;letter-spacing:2px;margin-bottom:30px;}
+.checkout-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:24px;cursor:pointer;}
+.checkout-close:hover{color:var(--red);}
+.checkout-form{display:flex;flex-direction:column;gap:16px;}
+.checkout-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.checkout-form input{background:var(--dark3);border:1px solid var(--glass-border);color:#fff;padding:14px;font-family:'Barlow',sans-serif;font-size:15px;outline:none;width:100%;transition:border-color 0.3s;}
+.checkout-form input:focus{border-color:var(--red);}
+.checkout-submit{padding:16px;background:var(--red);border:none;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:all 0.3s;}
+.checkout-submit:hover{background:var(--neon);box-shadow:0 0 20px var(--neon-glow);}
+.checkout-section-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-top:8px;}
 
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; } to { opacity: 1; }
-  }
-  @keyframes heroZoom {
-    from { transform: scale(1.08); } to { transform: scale(1); }
-  }
-  @keyframes marquee {
-    from { transform: translateX(0); } to { transform: translateX(-50%); }
-  }
-  @keyframes scrollLine {
-    0% { transform: scaleY(0); transform-origin: top; }
-    50% { transform: scaleY(1); transform-origin: top; }
-    51% { transform: scaleY(1); transform-origin: bottom; }
-    100% { transform: scaleY(0); transform-origin: bottom; }
-  }
-  @keyframes spin {
-    from { transform: rotate(0deg); } to { transform: rotate(360deg); }
-  }
+/* NOTIFICATION */
+.toast{position:fixed;bottom:30px;right:30px;background:var(--dark3);border:1px solid rgba(0,255,136,0.4);color:#fff;padding:14px 20px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;z-index:5000;transform:translateY(100px);opacity:0;transition:all 0.4s;display:flex;align-items:center;gap:10px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast i{color:var(--green);}
 
-  /* ─── SCROLL REVEAL ─── */
-  .reveal {
-    opacity: 0; transform: translateY(36px);
-    transition: opacity .8s ease, transform .8s ease;
-  }
-  .reveal.visible { opacity: 1; transform: none; }
-  .reveal-delay-1 { transition-delay: .1s; }
-  .reveal-delay-2 { transition-delay: .22s; }
-  .reveal-delay-3 { transition-delay: .34s; }
-  .reveal-delay-4 { transition-delay: .46s; }
-
-  /* ─── HAMBURGER ─── */
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    z-index: 200;
-    width: 32px;
-  }
-  .hamburger span {
-    display: block;
-    width: 24px;
-    height: 1.5px;
-    background: var(--walnut);
-    transition: transform .3s ease, opacity .3s ease;
-  }
-  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-  .hamburger.open span:nth-child(2) { opacity: 0; }
-  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-  /* ─── MOBILE NAV OVERLAY ─── */
-  .mobile-nav {
-    position: fixed; inset: 0;
-    background: var(--cream);
-    z-index: 150;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 28px;
-    opacity: 0; pointer-events: none;
-    transition: opacity .35s ease;
-  }
-  .mobile-nav.open { opacity: 1; pointer-events: all; }
-  .mobile-nav a {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(28px, 7vw, 40px);
-    font-weight: 300; letter-spacing: .06em;
-    color: var(--walnut); text-decoration: none;
-    transition: color .2s;
-  }
-  .mobile-nav a:hover { color: var(--clay); }
-  .mobile-nav .cart-btn { margin-top: 8px; cursor: pointer; font-size: 12px; }
-
-  /* ─── TOUCH DEVICES ─── */
-  @media (hover: none) {
-    body { cursor: auto; }
-    #cursor, #cursor-ring { display: none; }
-    button, a { cursor: pointer; }
-    .cart-btn, .btn-sand, .btn-walnut, .filter-tab, .quick-add, .btn-primary { cursor: pointer; }
-  }
-
-  /* ─── TABLET (≤ 900px) ─── */
-  @media (max-width: 900px) {
-    .nav-links, .nav-right { display: none; }
-    .hamburger { display: flex; }
-
-    .hero-badge { left: 16px; }
-
-    .collections { padding: 80px 40px; }
-    .collections-header { margin-bottom: 48px; }
-    .collections-grid {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto;
-    }
-    .col-card:first-child { grid-row: auto; }
-    .col-card:first-child img,
-    .col-card:not(:first-child) img { min-height: 240px; }
-
-    .featured { grid-template-columns: 1fr; }
-    .featured-content { padding: 60px 48px; }
-
-    .products { padding: 80px 40px; }
-    .products-grid { grid-template-columns: repeat(2, 1fr); }
-
-    .craft { grid-template-columns: 1fr; }
-    .craft-visual { min-height: 400px; }
-    .craft-visual-overlay { background: linear-gradient(to bottom, transparent 50%, var(--walnut)); }
-    .craft-content { padding: 64px 48px; }
-
-    .testimonials { padding: 80px 40px; }
-    .testimonials-grid { grid-template-columns: 1fr; gap: 3px; }
-
-    .newsletter { padding: 72px 40px; flex-direction: column; align-items: flex-start; gap: 36px; }
-    .newsletter-form { max-width: 100%; width: 100%; }
-
-    footer { padding: 64px 40px 36px; }
-    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
-  }
-
-  /* ─── MOBILE (≤ 600px) ─── */
-  @media (max-width: 600px) {
-    nav { padding: 18px 24px; }
-    nav.scrolled { padding: 14px 24px; }
-
-    .hero {
-      grid-template-columns: 1fr;
-      height: auto;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-    }
-    .hero-left {
-      padding: 100px 24px 52px;
-      flex-shrink: 0;
-    }
-    .hero-right {
-      flex: 1;
-      min-height: 260px;
-    }
-    .hero-desc { max-width: 100%; }
-    .hero-badge { left: 16px; bottom: 20px; width: 90px; height: 90px; }
-    .hero-badge-inner .num { font-size: 20px; }
-    .hero-badge-inner .sub { font-size: 9px; }
-    .hero-scroll { display: none; }
-
-    .collections { padding: 56px 20px; }
-    .collections-header { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 36px; }
-    .collections-grid { grid-template-columns: 1fr; gap: 3px; }
-    .col-card:first-child img { min-height: 280px; }
-    .col-card:not(:first-child) img { min-height: 220px; }
-
-    .featured { display: flex; flex-direction: column; }
-    .featured-visual { min-height: 280px; }
-    .featured-content { padding: 44px 24px; }
-    .featured-price { font-size: 34px; }
-    .featured-actions { flex-wrap: wrap; gap: 12px; }
-    .btn-sand, .btn-outline-cream { width: 100%; text-align: center; }
-
-    .products { padding: 56px 20px; }
-    .products-header { margin-bottom: 40px; }
-    .filter-tabs { flex-wrap: wrap; gap: 6px 4px; }
-    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
-    .product-info { padding: 14px 14px 20px; }
-    .product-name { font-size: 16px; }
-    .product-price { font-size: 18px; }
-
-    .craft { display: flex; flex-direction: column; }
-    .craft-visual { min-height: 260px; }
-    .craft-content { padding: 48px 24px; }
-    .craft-body { max-width: 100%; }
-    .craft-stats { grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 36px; }
-    .craft-num { font-size: 36px; }
-
-    .testimonials { padding: 56px 20px; }
-    .testimonial-card { padding: 36px 24px; }
-    .testimonial-text { font-size: 17px; }
-
-    .newsletter { padding: 56px 20px; }
-    .newsletter-form { flex-direction: column; }
-    .newsletter-input {
-      border-right: 1px solid rgba(42,26,14,.2);
-      border-bottom: none;
-    }
-    .btn-walnut { width: 100%; padding: 14px; }
-
-    footer { padding: 48px 20px 28px; }
-    .footer-top { grid-template-columns: 1fr; gap: 32px; }
-    .footer-bottom { flex-direction: column; gap: 14px; text-align: center; }
-    .footer-legal { flex-wrap: wrap; justify-content: center; gap: 12px 20px; }
-  }
-
-  /* ─── EXTRA SMALL (≤ 380px) ─── */
-  @media (max-width: 380px) {
-    .hero-left { padding: 90px 20px 44px; }
-    .hero-title { font-size: 52px; }
-    .products-grid { grid-template-columns: 1fr; }
-    .craft-stats { grid-template-columns: 1fr 1fr; }
-    .featured-actions { flex-direction: column; }
-  }
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .trainers-grid{grid-template-columns:repeat(2,1fr);}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .programs-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:900px){
+  .bmi-wrap{grid-template-columns:1fr;}
+  .products-grid{grid-template-columns:repeat(2,1fr);}
+  .supps-grid{grid-template-columns:repeat(2,1fr);}
+  .pricing-grid{grid-template-columns:1fr;max-width:400px;}
+  .pricing-card.popular{transform:scale(1);}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hero-stats{gap:30px;}
+  .container{padding:0 20px;}
+  .section{padding:70px 0;}
+  .programs-grid{grid-template-columns:1fr 1fr;}
+  .trainers-grid{grid-template-columns:1fr 1fr;}
+  #cart-sidebar{width:100%;}
+  .footer-grid{grid-template-columns:1fr;}
+  .store-banner{flex-direction:column;gap:16px;text-align:center;}
+  .checkout-row{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .hero-stats{flex-direction:column;gap:16px;bottom:80px;}
+  .programs-grid{grid-template-columns:1fr;}
+  .trainers-grid{grid-template-columns:1fr;}
+  .products-grid{grid-template-columns:1fr;}
+  .supps-grid{grid-template-columns:1fr;}
+  .gallery-grid{grid-template-columns:1fr;}
+  .hero-btns{flex-direction:column;align-items:center;}
+  .form-row{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
 
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-
-<!-- NAV -->
+<!-- NAVBAR -->
 <nav id="navbar">
-  <a href="#" class="nav-logo">ARCA</a>
-  <ul class="nav-links">
-    <li><a href="#">Collections</a></li>
-    <li><a href="#">Living Room</a></li>
-    <li><a href="#">Bedroom</a></li>
-    <li><a href="#">Dining</a></li>
-    <li><a href="#">Outdoor</a></li>
-  </ul>
-  <div class="nav-right">
-    <button class="cart-btn">Cart (0)</button>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">IRON<span>FORGE</span></a>
+    <ul class="nav-links">
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#trainers">Trainers</a></li>
+      <li><a href="#membership">Pricing</a></li>
+      <li><a href="#bmi">BMI</a></li>
+      <li><a href="#transformations">Results</a></li>
+      <li><a href="#store">Store</a></li>
+      <li>
+        <div class="cart-icon-wrap" onclick="toggleCart()">
+          <i class="fas fa-shopping-bag" style="font-size:20px;color:#fff;"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </div>
+      </li>
+      <li><a href="#membership" class="nav-cta">Join Now</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMobile()" id="hamBtn">
+      <span></span><span></span><span></span>
+    </div>
   </div>
-  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 
-<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
-  <a href="#" onclick="closeMobileNav()">Collections</a>
-  <a href="#" onclick="closeMobileNav()">Living Room</a>
-  <a href="#" onclick="closeMobileNav()">Bedroom</a>
-  <a href="#" onclick="closeMobileNav()">Dining</a>
-  <a href="#" onclick="closeMobileNav()">Outdoor</a>
-  <button class="cart-btn" onclick="closeMobileNav()">Cart (0)</button>
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#programs" onclick="toggleMobile()">Programs</a>
+  <a href="#trainers" onclick="toggleMobile()">Trainers</a>
+  <a href="#membership" onclick="toggleMobile()">Pricing</a>
+  <a href="#bmi" onclick="toggleMobile()">BMI</a>
+  <a href="#store" onclick="toggleMobile()">Store</a>
+  <a href="#membership" onclick="toggleMobile()" style="color:var(--red);">Join Now</a>
 </div>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <p class="hero-eyebrow">New Collection — Spring 2025</p>
-    <h1 class="hero-title">Furniture<br>that <em>endures</em></h1>
-    <p class="hero-desc">Pieces made with purpose. Designed for the way you live — calm, considered, and lasting for decades.</p>
-    <div class="hero-cta">
-      <a href="#" class="btn-primary">Explore Now</a>
-      <a href="#" class="btn-ghost"><span></span> Our Story</a>
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i class="fas fa-circle"></i> Elite Training Facility — Est. 2015</div>
+    <h1 class="hero-title">
+      <span class="line1">Forge</span>
+      <span class="line2">Your</span>
+      <span class="line3">Legacy</span>
+    </h1>
+    <p class="hero-sub">Elite training. Real results. No excuses.</p>
+    <div class="hero-btns">
+      <a href="#programs" class="btn-primary">Start Training</a>
+      <a href="#membership" class="btn-outline">Join Now</a>
     </div>
   </div>
-  <div class="hero-right">
-    <img class="hero-img" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80" alt="Modern living room with warm tones">
-    <div class="hero-overlay"></div>
-    <div class="hero-badge">
-      <div class="hero-badge-inner">
-        <span class="num">12</span>
-        <span class="sub">years craft</span>
-      </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num" data-count="5000">0</div>
+      <div class="hero-stat-label">Members</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" data-count="50">0</div>
+      <div class="hero-stat-label">Expert Trainers</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" data-count="12">0</div>
+      <div class="hero-stat-label">Locations</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" data-count="98">0</div>
+      <div class="hero-stat-label">Success Rate %</div>
     </div>
   </div>
-  <div class="hero-scroll">
+  <div class="scroll-indicator">
     <span>Scroll</span>
     <div class="scroll-line"></div>
   </div>
@@ -813,368 +523,982 @@
 
 <!-- MARQUEE -->
 <div class="marquee-section">
-  <div class="marquee-track" id="marquee">
-    <div class="marquee-item">Solid Oak <div class="marquee-dot"></div></div>
-    <div class="marquee-item">Handcrafted <div class="marquee-dot"></div></div>
-    <div class="marquee-item">Sustainably Sourced <div class="marquee-dot"></div></div>
-    <div class="marquee-item">Free Delivery <div class="marquee-dot"></div></div>
-    <div class="marquee-item">10-Year Warranty <div class="marquee-dot"></div></div>
-    <div class="marquee-item">Made to Order <div class="marquee-dot"></div></div>
-    <div class="marquee-item">Solid Oak <div class="marquee-dot"></div></div>
-    <div class="marquee-item">Handcrafted <div class="marquee-dot"></div></div>
-    <div class="marquee-item">Sustainably Sourced <div class="marquee-dot"></div></div>
-    <div class="marquee-item">Free Delivery <div class="marquee-dot"></div></div>
-    <div class="marquee-item">10-Year Warranty <div class="marquee-dot"></div></div>
-    <div class="marquee-item">Made to Order <div class="marquee-dot"></div></div>
+  <div class="marquee-track" id="marqueeTrack">
+    <span><i class="fas fa-dumbbell"></i> Strength Training</span>
+    <span><i class="fas fa-fire"></i> Fat Burn</span>
+    <span><i class="fas fa-bolt"></i> CrossFit</span>
+    <span><i class="fas fa-heart"></i> Cardio</span>
+    <span><i class="fas fa-trophy"></i> Competition Prep</span>
+    <span><i class="fas fa-dumbbell"></i> Powerlifting</span>
+    <span><i class="fas fa-running"></i> HIIT</span>
+    <span><i class="fas fa-leaf"></i> Nutrition</span>
+    <span><i class="fas fa-dumbbell"></i> Strength Training</span>
+    <span><i class="fas fa-fire"></i> Fat Burn</span>
+    <span><i class="fas fa-bolt"></i> CrossFit</span>
+    <span><i class="fas fa-heart"></i> Cardio</span>
+    <span><i class="fas fa-trophy"></i> Competition Prep</span>
+    <span><i class="fas fa-dumbbell"></i> Powerlifting</span>
+    <span><i class="fas fa-running"></i> HIIT</span>
+    <span><i class="fas fa-leaf"></i> Nutrition</span>
   </div>
 </div>
 
-<!-- COLLECTIONS -->
-<section class="collections">
-  <div class="collections-header reveal">
-    <div>
-      <p class="section-label">Browse by room</p>
-      <h2 class="section-title">Our <em>Collections</em></h2>
+<!-- PROGRAMS -->
+<section id="programs" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">What We Offer</div>
+      <h2 class="section-title">Training <span>Programs</span></h2>
+      <p class="section-sub">Six elite programs designed for every fitness goal</p>
     </div>
-    <a href="#" class="view-all">View all <span class="arrow">→</span></a>
-  </div>
-  <div class="collections-grid">
-    <div class="col-card reveal">
-      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80" alt="Living Room">
-      <div class="col-info">
-        <p class="col-name">Living Room</p>
-        <p class="col-count">48 pieces</p>
+    <div class="programs-grid reveal">
+      <div class="program-card">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" alt="Fat Loss">
+        <div class="program-overlay"></div>
+        <div class="program-content">
+          <i class="fas fa-fire program-icon"></i>
+          <div class="program-name">Fat Loss</div>
+          <div class="program-desc">High-intensity metabolic training designed to torch fat and reveal your best physique. HIIT, circuit training, and cardio fusion.</div>
+          <span class="program-tag">12 Week Plan</span>
+        </div>
       </div>
-    </div>
-    <div class="col-card reveal reveal-delay-1">
-      <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=80" alt="Bedroom">
-      <div class="col-info">
-        <p class="col-name">Bedroom</p>
-        <p class="col-count">32 pieces</p>
+      <div class="program-card">
+        <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80" alt="Muscle Gain">
+        <div class="program-overlay"></div>
+        <div class="program-content">
+          <i class="fas fa-dumbbell program-icon"></i>
+          <div class="program-name">Muscle Gain</div>
+          <div class="program-desc">Progressive overload hypertrophy program for maximum muscle growth. Periodized training with nutrition guidance.</div>
+          <span class="program-tag">16 Week Plan</span>
+        </div>
       </div>
-    </div>
-    <div class="col-card reveal reveal-delay-2">
-      <img src="https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=600&q=80" alt="Outdoor">
-      <div class="col-info">
-        <p class="col-name">Outdoor</p>
-        <p class="col-count">21 pieces</p>
+      <div class="program-card">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80" alt="Strength">
+        <div class="program-overlay"></div>
+        <div class="program-content">
+          <i class="fas fa-fist-raised program-icon"></i>
+          <div class="program-name">Strength</div>
+          <div class="program-desc">Powerlifting-based strength program built around the squat, bench, and deadlift. Build raw, functional strength.</div>
+          <span class="program-tag">20 Week Plan</span>
+        </div>
       </div>
-    </div>
-    <div class="col-card reveal reveal-delay-1">
-      <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Dining">
-      <div class="col-info">
-        <p class="col-name">Dining</p>
-        <p class="col-count">29 pieces</p>
+      <div class="program-card">
+        <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80" alt="CrossFit">
+        <div class="program-overlay"></div>
+        <div class="program-content">
+          <i class="fas fa-bolt program-icon"></i>
+          <div class="program-name">CrossFit</div>
+          <div class="program-desc">Varied functional movements at high intensity. Combines gymnastics, weightlifting, and metabolic conditioning.</div>
+          <span class="program-tag">8 Week Plan</span>
+        </div>
       </div>
-    </div>
-    <div class="col-card reveal reveal-delay-2">
-      <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80" alt="Office">
-      <div class="col-info">
-        <p class="col-name">Office</p>
-        <p class="col-count">17 pieces</p>
+      <div class="program-card">
+        <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=600&q=80" alt="Cardio">
+        <div class="program-overlay"></div>
+        <div class="program-content">
+          <i class="fas fa-heartbeat program-icon"></i>
+          <div class="program-name">Cardio</div>
+          <div class="program-desc">Improve endurance, cardiovascular health, and stamina with structured cardio progression programs.</div>
+          <span class="program-tag">10 Week Plan</span>
+        </div>
+      </div>
+      <div class="program-card">
+        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80" alt="Yoga">
+        <div class="program-overlay"></div>
+        <div class="program-content">
+          <i class="fas fa-leaf program-icon"></i>
+          <div class="program-name">Yoga & Mobility</div>
+          <div class="program-desc">Flexibility, recovery, and mindfulness training. Improve movement quality and prevent injuries.</div>
+          <span class="program-tag">Ongoing</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURED PRODUCT -->
-<div class="featured reveal">
-  <div class="featured-visual">
-    <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=900&q=80" alt="Wren Lounge Chair">
-    <div class="featured-tag">New Arrival</div>
-  </div>
-  <div class="featured-content">
-    <p class="section-label">Featured Piece</p>
-    <h2 class="section-title">Wren<br><em>Lounge Chair</em></h2>
-    <p class="featured-desc">Carved from a single arc of solid white oak, the Wren cradles you in curves worn smooth by hand. Available in natural, smoked, and ebonised finishes.</p>
-    <div class="featured-price">₹1,24,000</div>
-    <div class="featured-actions">
-      <button class="btn-sand">Add to Cart</button>
-      <a href="#" class="btn-outline-cream">Learn More</a>
+<!-- TRAINERS -->
+<section id="trainers" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Meet The Team</div>
+      <h2 class="section-title">Elite <span>Trainers</span></h2>
+      <p class="section-sub">Certified professionals dedicated to your transformation</p>
     </div>
-  </div>
-</div>
-
-<!-- PRODUCTS -->
-<section class="products">
-  <div class="products-header reveal">
-    <p class="section-label">Handpicked for you</p>
-    <h2 class="section-title">Best <em>Sellers</em></h2>
-    <div class="filter-tabs">
-      <button class="filter-tab active" onclick="setFilter(this)">All</button>
-      <button class="filter-tab" onclick="setFilter(this)">Seating</button>
-      <button class="filter-tab" onclick="setFilter(this)">Tables</button>
-      <button class="filter-tab" onclick="setFilter(this)">Storage</button>
-      <button class="filter-tab" onclick="setFilter(this)">Lighting</button>
-    </div>
-  </div>
-  <div class="products-grid">
-    <div class="product-card reveal">
-      <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&q=80" alt="Oslo Sofa">
-        <div class="product-badge">Best Seller</div>
-        <div class="product-img-overlay"><button class="quick-add">Quick Add</button></div>
-      </div>
-      <div class="product-info">
-        <p class="product-category">Seating</p>
-        <p class="product-name">Oslo Three-Seater</p>
-        <div class="product-pricing">
-          <span class="product-price">₹2,18,000</span>
-          <span class="product-old-price">₹2,60,000</span>
+    <div class="trainers-grid reveal">
+      <div class="trainer-card">
+        <div class="trainer-img-wrap">
+          <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=500&q=80" alt="Marcus Steel">
+          <div class="trainer-img-overlay"></div>
+          <div class="trainer-socials">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+          <div class="trainer-spec">Strength & Power</div>
         </div>
-        <div class="product-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="opacity:.35">★</span></div>
-      </div>
-    </div>
-    <div class="product-card reveal reveal-delay-1">
-      <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1549497538-303791108f95?w=500&q=80" alt="Cove Dining Table">
-        <div class="product-img-overlay"><button class="quick-add">Quick Add</button></div>
-      </div>
-      <div class="product-info">
-        <p class="product-category">Tables</p>
-        <p class="product-name">Cove Dining Table</p>
-        <div class="product-pricing">
-          <span class="product-price">₹1,85,000</span>
+        <div class="trainer-info">
+          <div class="trainer-name">Marcus Steel</div>
+          <div class="trainer-role">Head Strength Coach</div>
+          <div class="trainer-meta">
+            <div class="trainer-rating"><i class="fas fa-star"></i> 4.9 <span style="color:rgba(255,255,255,0.4);font-size:11px;">(284)</span></div>
+            <div class="trainer-exp">12 yrs exp</div>
+          </div>
+          <div class="trainer-certs">
+            <span class="cert-tag">NSCA-CSCS</span>
+            <span class="cert-tag">USAW L2</span>
+            <span class="cert-tag">FMS</span>
+          </div>
         </div>
-        <div class="product-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
       </div>
-    </div>
-    <div class="product-card reveal reveal-delay-2">
-      <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=500&q=80" alt="Mira Shelving">
-        <div class="product-badge">New</div>
-        <div class="product-img-overlay"><button class="quick-add">Quick Add</button></div>
-      </div>
-      <div class="product-info">
-        <p class="product-category">Storage</p>
-        <p class="product-name">Mira Wall Shelf</p>
-        <div class="product-pricing">
-          <span class="product-price">₹46,500</span>
+      <div class="trainer-card">
+        <div class="trainer-img-wrap">
+          <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=500&q=80" alt="Sofia Cruz">
+          <div class="trainer-img-overlay"></div>
+          <div class="trainer-socials">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+          </div>
+          <div class="trainer-spec">HIIT & Fat Loss</div>
         </div>
-        <div class="product-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="opacity:.35">★</span></div>
-      </div>
-    </div>
-    <div class="product-card reveal reveal-delay-3">
-      <div class="product-img">
-        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&q=80" alt="Wren Chair">
-        <div class="product-img-overlay"><button class="quick-add">Quick Add</button></div>
-      </div>
-      <div class="product-info">
-        <p class="product-category">Seating</p>
-        <p class="product-name">Wren Lounge Chair</p>
-        <div class="product-pricing">
-          <span class="product-price">₹1,24,000</span>
+        <div class="trainer-info">
+          <div class="trainer-name">Sofia Cruz</div>
+          <div class="trainer-role">Fat Loss Specialist</div>
+          <div class="trainer-meta">
+            <div class="trainer-rating"><i class="fas fa-star"></i> 4.8 <span style="color:rgba(255,255,255,0.4);font-size:11px;">(197)</span></div>
+            <div class="trainer-exp">8 yrs exp</div>
+          </div>
+          <div class="trainer-certs">
+            <span class="cert-tag">ACE-CPT</span>
+            <span class="cert-tag">Precision Nutrition</span>
+          </div>
         </div>
-        <div class="product-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+      <div class="trainer-card">
+        <div class="trainer-img-wrap">
+          <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&q=80" alt="Kane Brooks">
+          <div class="trainer-img-overlay"></div>
+          <div class="trainer-socials">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="trainer-spec">CrossFit</div>
+        </div>
+        <div class="trainer-info">
+          <div class="trainer-name">Kane Brooks</div>
+          <div class="trainer-role">CrossFit Coach</div>
+          <div class="trainer-meta">
+            <div class="trainer-rating"><i class="fas fa-star"></i> 4.9 <span style="color:rgba(255,255,255,0.4);font-size:11px;">(312)</span></div>
+            <div class="trainer-exp">10 yrs exp</div>
+          </div>
+          <div class="trainer-certs">
+            <span class="cert-tag">CF-L3</span>
+            <span class="cert-tag">NSCA-CPT</span>
+          </div>
+        </div>
+      </div>
+      <div class="trainer-card">
+        <div class="trainer-img-wrap">
+          <img src="https://images.unsplash.com/photo-1607962837359-5e7e89f86776?w=500&q=80" alt="Maya Patel">
+          <div class="trainer-img-overlay"></div>
+          <div class="trainer-socials">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+          </div>
+          <div class="trainer-spec">Yoga & Recovery</div>
+        </div>
+        <div class="trainer-info">
+          <div class="trainer-name">Maya Patel</div>
+          <div class="trainer-role">Yoga & Mobility Coach</div>
+          <div class="trainer-meta">
+            <div class="trainer-rating"><i class="fas fa-star"></i> 5.0 <span style="color:rgba(255,255,255,0.4);font-size:11px;">(156)</span></div>
+            <div class="trainer-exp">9 yrs exp</div>
+          </div>
+          <div class="trainer-certs">
+            <span class="cert-tag">RYT-500</span>
+            <span class="cert-tag">NASM-CES</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CRAFTSMANSHIP -->
-<div class="craft reveal">
-  <div class="craft-visual">
-    <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=900&q=80" alt="Craftsman at work">
-    <div class="craft-visual-overlay"></div>
-  </div>
-  <div class="craft-content">
-    <p class="section-label">Our Philosophy</p>
-    <h2 class="section-title">Built by<br><em>hand. Built</em><br>to last.</h2>
-    <p class="craft-body">Every ARCA piece begins as a conversation between maker and material. Our craftspeople work with sustainably forested hardwoods, taking time to understand the grain before a single cut is made. The result is furniture that improves with age.</p>
-    <div class="craft-stats">
-      <div class="craft-stat">
-        <div class="craft-num">4,200+</div>
-        <div class="craft-label">Homes furnished</div>
+<!-- MEMBERSHIP -->
+<section id="membership" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Pricing</div>
+      <h2 class="section-title">Membership <span>Plans</span></h2>
+      <p class="section-sub">Flexible plans built to fit your goals and budget</p>
+    </div>
+    <div class="pricing-toggle reveal">
+      <span class="toggle-label active" id="monthlyLabel">Monthly</span>
+      <div class="toggle-switch" id="toggleSwitch" onclick="togglePricing()">
+        <div class="toggle-knob"></div>
       </div>
-      <div class="craft-stat">
-        <div class="craft-num">100%</div>
-        <div class="craft-label">Solid hardwood</div>
+      <span class="toggle-label" id="yearlyLabel">Yearly <span class="save-badge">Save 30%</span></span>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="pricing-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">
+          <span class="currency">$</span>
+          <span class="amount" id="price1">39</span>
+          <span class="period">/mo</span>
+        </div>
+        <p class="plan-desc">Perfect for beginners starting their fitness journey</p>
+        <ul class="plan-features">
+          <li><i class="fas fa-check"></i> Gym Floor Access</li>
+          <li><i class="fas fa-check"></i> Locker Room</li>
+          <li><i class="fas fa-check"></i> 2 Group Classes/Month</li>
+          <li><i class="fas fa-check"></i> Fitness Assessment</li>
+          <li class="disabled"><i class="fas fa-times"></i> Personal Training</li>
+          <li class="disabled"><i class="fas fa-times"></i> Nutrition Coaching</li>
+          <li class="disabled"><i class="fas fa-times"></i> Recovery Suite</li>
+        </ul>
+        <button class="plan-btn">Get Started</button>
       </div>
-      <div class="craft-stat">
-        <div class="craft-num">12</div>
-        <div class="craft-label">Years of craft</div>
+      <div class="pricing-card popular">
+        <div class="popular-badge">Most Popular</div>
+        <div class="plan-name">Elite</div>
+        <div class="plan-price">
+          <span class="currency">$</span>
+          <span class="amount" id="price2">79</span>
+          <span class="period">/mo</span>
+        </div>
+        <p class="plan-desc">The complete package for serious fitness enthusiasts</p>
+        <ul class="plan-features">
+          <li><i class="fas fa-check"></i> 24/7 Gym Access</li>
+          <li><i class="fas fa-check"></i> All Group Classes</li>
+          <li><i class="fas fa-check"></i> 4 PT Sessions/Month</li>
+          <li><i class="fas fa-check"></i> Nutrition Coaching</li>
+          <li><i class="fas fa-check"></i> Recovery Suite</li>
+          <li><i class="fas fa-check"></i> App Access</li>
+          <li class="disabled"><i class="fas fa-times"></i> VIP Lounge</li>
+        </ul>
+        <button class="plan-btn">Get Elite</button>
       </div>
-      <div class="craft-stat">
-        <div class="craft-num">48</div>
-        <div class="craft-label">Skilled artisans</div>
+      <div class="pricing-card">
+        <div class="plan-name">Champion</div>
+        <div class="plan-price">
+          <span class="currency">$</span>
+          <span class="amount" id="price3">149</span>
+          <span class="period">/mo</span>
+        </div>
+        <p class="plan-desc">The ultimate unlimited experience for champions</p>
+        <ul class="plan-features">
+          <li><i class="fas fa-check"></i> 24/7 VIP Access</li>
+          <li><i class="fas fa-check"></i> Unlimited Classes</li>
+          <li><i class="fas fa-check"></i> Unlimited PT Sessions</li>
+          <li><i class="fas fa-check"></i> Custom Nutrition Plan</li>
+          <li><i class="fas fa-check"></i> Recovery & Spa Suite</li>
+          <li><i class="fas fa-check"></i> VIP Lounge Access</li>
+          <li><i class="fas fa-check"></i> Priority Booking</li>
+        </ul>
+        <button class="plan-btn">Go Champion</button>
       </div>
     </div>
   </div>
-</div>
+</section>
+
+<!-- BMI CALCULATOR -->
+<section id="bmi" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Tools</div>
+      <h2 class="section-title">BMI <span>Calculator</span></h2>
+      <p class="section-sub">Calculate your body mass index and get personalized recommendations</p>
+    </div>
+    <div class="bmi-wrap reveal">
+      <div>
+        <div class="bmi-form">
+          <h3>Calculate Your BMI</h3>
+          <p>Enter your details for an instant health assessment</p>
+          <div style="margin-bottom:20px;">
+            <div class="form-group" style="margin-bottom:12px;">
+              <label>Gender</label>
+              <div class="gender-btns">
+                <button class="gender-btn active" id="genderM" onclick="setGender('m')"><i class="fas fa-mars"></i> Male</button>
+                <button class="gender-btn" id="genderF" onclick="setGender('f')"><i class="fas fa-venus"></i> Female</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Age (years)</label>
+              <input type="number" id="bmiAge" placeholder="25" min="10" max="100">
+            </div>
+            <div class="form-group">
+              <label>Unit</label>
+              <select id="bmiUnit" onchange="toggleUnit()">
+                <option value="metric">Metric (kg/cm)</option>
+                <option value="imperial">Imperial (lb/ft)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label id="weightLabel">Weight (kg)</label>
+              <input type="number" id="bmiWeight" placeholder="70" min="1">
+            </div>
+            <div class="form-group">
+              <label id="heightLabel">Height (cm)</label>
+              <input type="number" id="bmiHeight" placeholder="175" min="1">
+            </div>
+          </div>
+          <button class="bmi-calc-btn" onclick="calcBMI()"><i class="fas fa-calculator"></i> Calculate BMI</button>
+        </div>
+        <div class="bmi-info-cards">
+          <div class="bmi-info-card"><div class="val">18.5</div><div class="lbl">Underweight</div></div>
+          <div class="bmi-info-card"><div class="val">18.5–25</div><div class="lbl">Normal</div></div>
+          <div class="bmi-info-card"><div class="val">25–30</div><div class="lbl">Overweight</div></div>
+          <div class="bmi-info-card"><div class="val">30+</div><div class="lbl">Obese</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="bmi-result" id="bmiResult">
+          <div class="bmi-number-wrap">
+            <div class="bmi-number" id="bmiValue">--</div>
+            <div class="bmi-category" id="bmiCategory">Your BMI</div>
+          </div>
+          <div class="bmi-bar-wrap">
+            <div class="bmi-bar"><div class="bmi-marker" id="bmiMarker" style="left:0%"></div></div>
+            <div class="bmi-labels"><span>16</span><span>18.5</span><span>25</span><span>30</span><span>40</span></div>
+          </div>
+          <div class="bmi-recommend" id="bmiRecommend"></div>
+        </div>
+        <div style="background:var(--dark3);border:1px solid var(--glass-border);padding:30px;" id="bmiPlaceholder">
+          <div style="text-align:center;padding:40px 0;color:rgba(255,255,255,0.3);">
+            <i class="fas fa-calculator" style="font-size:60px;margin-bottom:16px;display:block;"></i>
+            <p style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:2px;">Enter Your Details</p>
+            <p style="font-size:14px;margin-top:8px;">Your results will appear here</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSFORMATION GALLERY -->
+<section id="transformations" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Success Stories</div>
+      <h2 class="section-title">Real <span>Transformations</span></h2>
+      <p class="section-sub">Hover to reveal the after — real results from real members</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="transform-card">
+        <div class="before-after-slider">
+          <img class="before-img" src="https://images.unsplash.com/photo-1485217988980-11786ced9454?w=600&q=80" alt="Before">
+          <img class="after-img" src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80" alt="After">
+          <div class="before-label">Before</div>
+          <div class="after-label">After</div>
+        </div>
+        <div class="transform-info">
+          <div class="transform-name">Jake Morrison</div>
+          <div class="transform-stats">
+            <div class="transform-stat">Lost <strong>32 lbs</strong></div>
+            <div class="transform-stat">In <strong>16 weeks</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="transform-card">
+        <div class="before-after-slider">
+          <img class="before-img" src="https://images.unsplash.com/photo-1579758629938-03607ccdbaba?w=600&q=80" alt="Before">
+          <img class="after-img" src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="After">
+          <div class="before-label">Before</div>
+          <div class="after-label">After</div>
+        </div>
+        <div class="transform-info">
+          <div class="transform-name">Sarah Kim</div>
+          <div class="transform-stats">
+            <div class="transform-stat">Lost <strong>28 lbs</strong></div>
+            <div class="transform-stat">In <strong>12 weeks</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="transform-card">
+        <div class="before-after-slider">
+          <img class="before-img" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80" alt="Before">
+          <img class="after-img" src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=600&q=80" alt="After">
+          <div class="before-label">Before</div>
+          <div class="after-label">After</div>
+        </div>
+        <div class="transform-info">
+          <div class="transform-name">Lisa Chen</div>
+          <div class="transform-stats">
+            <div class="transform-stat">Gained <strong>12 lbs muscle</strong></div>
+            <div class="transform-stat">In <strong>20 weeks</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- TESTIMONIALS -->
-<section class="testimonials">
-  <div class="testimonials-header reveal">
-    <p class="section-label">What people say</p>
-    <h2 class="section-title">Loved by <em>homeowners</em></h2>
+<section id="testimonials" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Reviews</div>
+      <h2 class="section-title">What Members <span>Say</span></h2>
+    </div>
+    <div class="testimonials-wrap reveal">
+      <div class="testimonials-track" id="testimonialsTrack">
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p class="testimonial-text">"IronForge completely changed my life. In 6 months I lost 40 pounds and gained more confidence than I've ever had. The trainers are world-class and actually care about your progress."</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&q=80" alt="Mike T">
+            <div>
+              <div class="testimonial-name">Mike Thompson</div>
+              <div class="testimonial-plan">Elite Member — 18 months</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p class="testimonial-text">"The best gym I've ever been to. State-of-the-art equipment, amazing community, and the CrossFit classes with Kane are absolutely brutal — in the best possible way!"</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Rachel M">
+            <div>
+              <div class="testimonial-name">Rachel Morris</div>
+              <div class="testimonial-plan">Champion Member — 2 years</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p class="testimonial-text">"Started with zero experience and now I'm competing in local powerlifting meets. Marcus is a phenomenal coach who knows exactly how to push you without breaking you."</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80" alt="David L">
+            <div>
+              <div class="testimonial-name">David Lee</div>
+              <div class="testimonial-plan">Elite Member — 14 months</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-half-star"></i></div>
+          <p class="testimonial-text">"The nutrition coaching alongside training made all the difference. Sofia designed a plan around my lifestyle and the results have been incredible. Down 3 dress sizes!"</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Amanda W">
+            <div>
+              <div class="testimonial-name">Amanda Walsh</div>
+              <div class="testimonial-plan">Elite Member — 10 months</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-controls">
+        <button class="t-btn" onclick="slideTestimonials(-1)"><i class="fas fa-chevron-left"></i></button>
+        <button class="t-btn" onclick="slideTestimonials(1)"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
   </div>
-  <div class="testimonials-grid">
-    <div class="testimonial-card reveal">
-      <div class="quote-mark">"</div>
-      <p class="testimonial-text">The Oslo sofa arrived and it immediately transformed our living room. The craftsmanship is extraordinary — you can feel the weight and quality the moment you sit down.</p>
-      <div class="testimonial-author">
-        <div class="author-avatar"><img src="https://i.pravatar.cc/100?img=47" alt="Priya Mehta"></div>
-        <div>
-          <p class="author-name">Priya Mehta</p>
-          <p class="author-location">Mumbai, India</p>
+</section>
+
+<!-- SUPPLEMENTS -->
+<section id="supplements" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Nutrition</div>
+      <h2 class="section-title">Supplements & <span>Nutrition</span></h2>
+      <p class="section-sub">Premium supplements for peak performance and recovery</p>
+    </div>
+    <div class="supps-grid reveal">
+      <div class="supp-card">
+        <div class="supp-img">
+          <img src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=400&q=80" alt="Whey Protein">
+          <div class="supp-badge new">New</div>
+        </div>
+        <div class="supp-body">
+          <div class="supp-cat">Protein</div>
+          <div class="supp-name">IronForge Whey Pro</div>
+          <div class="supp-price">$54.99 <span class="old">$69.99</span></div>
+          <button class="supp-add" onclick="addToCart({name:'IronForge Whey Pro',price:54.99,img:'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=200&q=80'})"><i class="fas fa-cart-plus"></i> Add to Cart</button>
         </div>
       </div>
-    </div>
-    <div class="testimonial-card reveal reveal-delay-1">
-      <div class="quote-mark">"</div>
-      <p class="testimonial-text">I've bought furniture from all over the world and ARCA is genuinely in a different class. The Cove dining table is the piece our entire home revolves around now.</p>
-      <div class="testimonial-author">
-        <div class="author-avatar"><img src="https://i.pravatar.cc/100?img=12" alt="Arjun Sharma"></div>
-        <div>
-          <p class="author-name">Arjun Sharma</p>
-          <p class="author-location">Bangalore, India</p>
+      <div class="supp-card">
+        <div class="supp-img">
+          <img src="https://images.unsplash.com/photo-1614513741885-8c1dae27fa6a?w=400&q=80" alt="Pre-Workout">
+          <div class="supp-badge sale">Sale</div>
+        </div>
+        <div class="supp-body">
+          <div class="supp-cat">Pre-Workout</div>
+          <div class="supp-name">Forge Pre-Workout X</div>
+          <div class="supp-price">$44.99 <span class="old">$59.99</span></div>
+          <button class="supp-add" onclick="addToCart({name:'Forge Pre-Workout X',price:44.99,img:'https://images.unsplash.com/photo-1614513741885-8c1dae27fa6a?w=200&q=80'})"><i class="fas fa-cart-plus"></i> Add to Cart</button>
         </div>
       </div>
-    </div>
-    <div class="testimonial-card reveal reveal-delay-2">
-      <div class="quote-mark">"</div>
-      <p class="testimonial-text">Three years in and the oak only looks better. There's something deeply satisfying about owning something that's built to outlast trends — and probably outlast me.</p>
-      <div class="testimonial-author">
-        <div class="author-avatar"><img src="https://i.pravatar.cc/100?img=33" alt="Kavita Nair"></div>
-        <div>
-          <p class="author-name">Kavita Nair</p>
-          <p class="author-location">Delhi, India</p>
+      <div class="supp-card">
+        <div class="supp-img">
+          <img src="https://images.unsplash.com/photo-1595348020949-87cdfbb44174?w=400&q=80" alt="Creatine">
+        </div>
+        <div class="supp-body">
+          <div class="supp-cat">Creatine</div>
+          <div class="supp-name">Creatine Monohydrate</div>
+          <div class="supp-price">$29.99</div>
+          <button class="supp-add" onclick="addToCart({name:'Creatine Monohydrate',price:29.99,img:'https://images.unsplash.com/photo-1595348020949-87cdfbb44174?w=200&q=80'})"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+        </div>
+      </div>
+      <div class="supp-card">
+        <div class="supp-img">
+          <img src="https://images.unsplash.com/photo-1545601445-4d6a0a0565f0?w=400&q=80" alt="BCAA">
+          <div class="supp-badge new">New</div>
+        </div>
+        <div class="supp-body">
+          <div class="supp-cat">Recovery</div>
+          <div class="supp-name">BCAA Recovery Blend</div>
+          <div class="supp-price">$39.99 <span class="old">$49.99</span></div>
+          <button class="supp-add" onclick="addToCart({name:'BCAA Recovery Blend',price:39.99,img:'https://images.unsplash.com/photo-1545601445-4d6a0a0565f0?w=200&q=80'})"><i class="fas fa-cart-plus"></i> Add to Cart</button>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- NEWSLETTER -->
-<div class="newsletter reveal">
-  <div class="newsletter-left">
-    <h2 class="newsletter-title">Join the<br>inner circle</h2>
-    <p class="newsletter-sub">Early access, new arrivals, care guides.</p>
+<!-- STORE -->
+<section id="store" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Equipment Store</div>
+      <h2 class="section-title">Gym <span>Store</span></h2>
+      <p class="section-sub">Premium fitness equipment delivered to your door</p>
+    </div>
+
+    <div class="store-banner reveal">
+      <div class="store-banner-text">
+        <h3>Summer Sale — Up to 40% Off</h3>
+        <p>Use code at checkout. Limited time offer on selected equipment.</p>
+      </div>
+      <div class="discount-code">FORGE40</div>
+    </div>
+
+    <div class="store-cats reveal">
+      <button class="store-cat-btn active" onclick="filterProducts('all',this)">All</button>
+      <button class="store-cat-btn" onclick="filterProducts('weights',this)">Weights</button>
+      <button class="store-cat-btn" onclick="filterProducts('cardio',this)">Cardio</button>
+      <button class="store-cat-btn" onclick="filterProducts('accessories',this)">Accessories</button>
+      <button class="store-cat-btn" onclick="filterProducts('machines',this)">Machines</button>
+      <button class="store-cat-btn" onclick="filterProducts('supplements',this)">Supplements</button>
+    </div>
+
+    <div class="products-grid reveal" id="productsGrid">
+      <!-- Products injected by JS -->
+    </div>
   </div>
-  <form class="newsletter-form" onsubmit="handleNewsletter(event)">
-    <input class="newsletter-input" type="email" placeholder="Your email address">
-    <button type="submit" class="btn-walnut">Subscribe</button>
-  </form>
-</div>
+</section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <div class="footer-logo">ARCA</div>
-      <p class="footer-tagline">Furniture made with considered craft, for homes that hold their stories.</p>
-      <div class="footer-socials">
-        <a href="#" class="social-btn">in</a>
-        <a href="#" class="social-btn">ig</a>
-        <a href="#" class="social-btn">pi</a>
-        <a href="#" class="social-btn">yt</a>
+<footer id="footer">
+  <div class="footer-main">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">IRON<span>FORGE</span></div>
+          <p>We don't just build bodies — we forge champions. IronForge is the premier fitness destination for those who refuse to settle for average.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#programs"><i class="fas fa-chevron-right"></i> Programs</a></li>
+            <li><a href="#trainers"><i class="fas fa-chevron-right"></i> Trainers</a></li>
+            <li><a href="#membership"><i class="fas fa-chevron-right"></i> Membership</a></li>
+            <li><a href="#store"><i class="fas fa-chevron-right"></i> Store</a></li>
+            <li><a href="#bmi"><i class="fas fa-chevron-right"></i> BMI Calculator</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Gym Hours</h4>
+          <ul class="footer-hours">
+            <li><span>Mon – Fri</span><span>5AM – 11PM</span></li>
+            <li><span>Saturday</span><span>6AM – 10PM</span></li>
+            <li><span>Sunday</span><span>7AM – 8PM</span></li>
+            <li><span>Holidays</span><span>8AM – 6PM</span></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="#"><i class="fas fa-map-marker-alt"></i> 123 Forge Street, NYC</a></li>
+            <li><a href="#"><i class="fas fa-phone"></i> +1 (800) IRONFORGE</a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> info@ironforge.com</a></li>
+            <li><a href="#"><i class="fas fa-globe"></i> www.ironforge.com</a></li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="footer-col">
-      <h4>Collections</h4>
-      <ul>
-        <li><a href="#">Living Room</a></li>
-        <li><a href="#">Bedroom</a></li>
-        <li><a href="#">Dining</a></li>
-        <li><a href="#">Outdoor</a></li>
-        <li><a href="#">Office</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#">About ARCA</a></li>
-        <li><a href="#">Our Craftspeople</a></li>
-        <li><a href="#">Sustainability</a></li>
-        <li><a href="#">Showrooms</a></li>
-        <li><a href="#">Press</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Support</h4>
-      <ul>
-        <li><a href="#">Delivery & Returns</a></li>
-        <li><a href="#">Care Guide</a></li>
-        <li><a href="#">Trade Programme</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">FAQ</a></li>
-      </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 ARCA. All rights reserved.</span>
-    <div class="footer-legal">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Use</a>
-      <a href="#">Cookie Settings</a>
+    <div class="container">
+      <div class="footer-bottom-inner">
+        <p>© 2026 <span>IronForge Gym</span>. All rights reserved.</p>
+        <p>Designed with <span>♥</span> for champions</p>
+      </div>
     </div>
   </div>
 </footer>
 
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div id="cart-sidebar">
+  <div class="cart-header">
+    <span class="cart-title">Your Cart</span>
+    <button class="cart-close" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <i class="fas fa-shopping-bag"></i>
+      <p>Your cart is empty</p>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <span class="amount" id="cartTotal">$0.00</span>
+    </div>
+    <button class="checkout-btn" onclick="openCheckout()">Checkout <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkout-modal">
+  <div class="checkout-overlay" onclick="closeCheckout()"></div>
+  <div class="checkout-box">
+    <button class="checkout-close" onclick="closeCheckout()"><i class="fas fa-times"></i></button>
+    <h2>Checkout</h2>
+    <div class="checkout-form">
+      <div class="checkout-section-title">Personal Info</div>
+      <div class="checkout-row">
+        <input type="text" placeholder="First Name">
+        <input type="text" placeholder="Last Name">
+      </div>
+      <input type="email" placeholder="Email Address">
+      <input type="tel" placeholder="Phone Number">
+      <div class="checkout-section-title">Shipping</div>
+      <input type="text" placeholder="Street Address">
+      <div class="checkout-row">
+        <input type="text" placeholder="City">
+        <input type="text" placeholder="ZIP Code">
+      </div>
+      <div class="checkout-section-title">Payment</div>
+      <input type="text" placeholder="Card Number">
+      <div class="checkout-row">
+        <input type="text" placeholder="MM/YY">
+        <input type="text" placeholder="CVV">
+      </div>
+      <button class="checkout-submit" onclick="submitOrder()">Place Order — <span id="checkoutTotal">$0.00</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">Added to cart!</span></div>
+
 <script>
-  // Hamburger menu
-  const hamburger = document.getElementById('hamburger');
-  const mobileNav = document.getElementById('mobile-nav');
+// ===================== NAVBAR =====================
+window.addEventListener('scroll',()=>{
+  const nb=document.getElementById('navbar');
+  nb.classList.toggle('scrolled',window.scrollY>50);
+});
 
-  hamburger.addEventListener('click', () => {
-    const isOpen = mobileNav.classList.toggle('open');
-    hamburger.classList.toggle('open', isOpen);
-    hamburger.setAttribute('aria-expanded', isOpen);
-    mobileNav.setAttribute('aria-hidden', !isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  });
-
-  function closeMobileNav() {
-    mobileNav.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    mobileNav.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+// ===================== MOBILE MENU =====================
+function toggleMobile(){
+  const m=document.getElementById('mobileMenu');
+  const h=document.getElementById('hamBtn');
+  m.classList.toggle('open');
+  const spans=h.querySelectorAll('span');
+  if(m.classList.contains('open')){
+    spans[0].style.transform='rotate(45deg) translate(5px,5px)';
+    spans[1].style.opacity='0';
+    spans[2].style.transform='rotate(-45deg) translate(5px,-5px)';
+  } else {
+    spans[0].style.transform='';
+    spans[1].style.opacity='';
+    spans[2].style.transform='';
   }
+}
 
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
-  let mx = -100, my = -100, rx = -100, ry = -100;
+// ===================== COUNTER ANIMATION =====================
+function animateCounter(el,target,suffix=''){
+  let start=0;
+  const dur=2000;
+  const step=dur/60;
+  const inc=target/60;
+  const timer=setInterval(()=>{
+    start+=inc;
+    if(start>=target){start=target;clearInterval(timer);}
+    el.textContent=Math.floor(start).toLocaleString()+(suffix||'');
+  },step);
+}
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+// ===================== REVEAL ON SCROLL =====================
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // counter
+      const nums=e.target.querySelectorAll('[data-count]');
+      nums.forEach(n=>{
+        const val=parseInt(n.dataset.count);
+        animateCounter(n,val,n.dataset.suffix||'');
+      });
+    }
   });
+},{threshold:0.15});
 
-  (function animateRing() {
-    rx += (mx - rx) * .12;
-    ry += (my - ry) * .12;
-    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
-    requestAnimationFrame(animateRing);
-  })();
+document.querySelectorAll('.reveal,[data-count]').forEach(el=>observer.observe(el));
+// Hero stats separate observer
+document.querySelectorAll('.hero-stat-num').forEach(el=>{
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const val=parseInt(e.target.dataset.count);
+        animateCounter(e.target,val);
+      }
+    });
+  },{threshold:0.5});
+  io.observe(el);
+});
 
-  // Nav scroll
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+// ===================== PRICING TOGGLE =====================
+const prices={monthly:[39,79,149],yearly:[27,55,104]};
+let isYearly=false;
+function togglePricing(){
+  isYearly=!isYearly;
+  const sw=document.getElementById('toggleSwitch');
+  sw.classList.toggle('yearly',isYearly);
+  document.getElementById('monthlyLabel').classList.toggle('active',!isYearly);
+  document.getElementById('yearlyLabel').classList.toggle('active',isYearly);
+  const p=isYearly?prices.yearly:prices.monthly;
+  document.getElementById('price1').textContent=p[0];
+  document.getElementById('price2').textContent=p[1];
+  document.getElementById('price3').textContent=p[2];
+}
+
+// ===================== GENDER BUTTONS =====================
+let selectedGender='m';
+function setGender(g){
+  selectedGender=g;
+  document.getElementById('genderM').classList.toggle('active',g==='m');
+  document.getElementById('genderF').classList.toggle('active',g==='f');
+}
+function toggleUnit(){
+  const u=document.getElementById('bmiUnit').value;
+  document.getElementById('weightLabel').textContent=u==='metric'?'Weight (kg)':'Weight (lbs)';
+  document.getElementById('heightLabel').textContent=u==='metric'?'Height (cm)':'Height (inches)';
+  document.getElementById('bmiWeight').placeholder=u==='metric'?'70':'154';
+  document.getElementById('bmiHeight').placeholder=u==='metric'?'175':'69';
+}
+
+// ===================== BMI CALCULATOR =====================
+function calcBMI(){
+  const unit=document.getElementById('bmiUnit').value;
+  let weight=parseFloat(document.getElementById('bmiWeight').value);
+  let height=parseFloat(document.getElementById('bmiHeight').value);
+  if(!weight||!height||isNaN(weight)||isNaN(height)){showToast('Please enter valid height and weight.');return;}
+  let bmi;
+  if(unit==='metric'){
+    const hm=height/100;
+    bmi=weight/(hm*hm);
+  } else {
+    bmi=(703*weight)/(height*height);
+  }
+  bmi=Math.round(bmi*10)/10;
+  let cat,color,recs;
+  if(bmi<18.5){cat='Underweight';color='#00bfff';recs=['Increase caloric intake gradually','Focus on strength training to build muscle mass','Consult a nutritionist for a bulk plan','Prioritize protein intake (1.5g per kg bodyweight)','Track your progress weekly'];}
+  else if(bmi<25){cat='Normal Weight';color='#00ff88';recs=['Maintain current healthy habits','Mix cardio with resistance training','Focus on body composition, not just weight','Stay hydrated and prioritize sleep','Consider performance-based goals'];}
+  else if(bmi<30){cat='Overweight';color='#ffd700';recs=['Create a moderate caloric deficit','Increase cardio to 150+ min/week','Prioritize whole foods and reduce processed food','Add resistance training to preserve muscle','Track macros with a nutrition app'];}
+  else{cat='Obese';color='#ff4444';recs=['Consult a physician before starting','Begin with low-impact cardio (walking, swimming)','Focus on sustainable dietary changes','Work with a certified personal trainer','Set small, achievable weekly goals'];}
+
+  document.getElementById('bmiPlaceholder').style.display='none';
+  const result=document.getElementById('bmiResult');
+  result.classList.add('show');
+  const valEl=document.getElementById('bmiValue');
+  valEl.textContent=bmi;
+  valEl.style.color=color;
+  document.getElementById('bmiCategory').textContent=cat;
+  // marker position (16 to 40 range)
+  const pct=Math.min(100,Math.max(0,((bmi-16)/(40-16))*100));
+  document.getElementById('bmiMarker').style.left=pct+'%';
+  const recHTML=`<h4>Recommendations</h4><ul>${recs.map(r=>`<li><i class="fas fa-check-circle"></i> ${r}</li>`).join('')}</ul>`;
+  document.getElementById('bmiRecommend').innerHTML=recHTML;
+}
+
+// ===================== TESTIMONIALS SLIDER =====================
+let tOffset=0;
+const tCardW=404;
+function slideTestimonials(dir){
+  const track=document.getElementById('testimonialsTrack');
+  const max=track.children.length;
+  tOffset+=dir;
+  tOffset=Math.max(0,Math.min(tOffset,max-1));
+  track.style.transform=`translateX(-${tOffset*(tCardW)}px)`;
+}
+
+// ===================== PRODUCTS DATA =====================
+const products=[
+  {id:1,name:'Pro Adjustable Dumbbell Set',cat:'weights',price:299,orig:399,rating:4.8,reviews:243,tag:'bestseller',img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80'},
+  {id:2,name:'Olympic Barbell 20kg',cat:'weights',price:189,orig:249,rating:4.9,reviews:187,tag:'bestseller',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80'},
+  {id:3,name:'Commercial Treadmill X5',cat:'cardio',price:1299,orig:1799,rating:4.7,reviews:89,tag:'sale',img:'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=400&q=80'},
+  {id:4,name:'Adjustable Weight Bench',cat:'machines',price:249,orig:329,rating:4.8,reviews:156,tag:'bestseller',img:'https://images.unsplash.com/photo-1590487988256-9ed24133863e?w=400&q=80'},
+  {id:5,name:'Resistance Band Set (5pc)',cat:'accessories',price:39,orig:null,rating:4.6,reviews:412,tag:'new',img:'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=400&q=80'},
+  {id:6,name:'32kg Kettlebell',cat:'weights',price:89,orig:109,rating:4.9,reviews:98,tag:'sale',img:'https://images.unsplash.com/photo-1517344884509-a0c97ec11bcc?w=400&q=80'},
+  {id:7,name:'Pull-Up Bar Station',cat:'machines',price:179,orig:229,rating:4.7,reviews:134,tag:'bestseller',img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=400&q=80'},
+  {id:8,name:'Premium Yoga Mat 6mm',cat:'accessories',price:49,orig:null,rating:4.8,reviews:267,tag:'new',img:'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&q=80'},
+  {id:9,name:'Weight Plate Set 100kg',cat:'weights',price:349,orig:449,rating:4.9,reviews:76,tag:'sale',img:'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=400&q=80'},
+  {id:10,name:'Stationary Bike Pro',cat:'cardio',price:599,orig:799,rating:4.6,reviews:112,tag:'sale',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80'},
+  {id:11,name:'Home Gym Cable Machine',cat:'machines',price:899,orig:1199,rating:4.8,reviews:54,tag:'new',img:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&q=80'},
+  {id:12,name:'Whey Protein Isolate 5lb',cat:'supplements',price:74,orig:89,rating:4.9,reviews:384,tag:'bestseller',img:'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=400&q=80'},
+];
+
+function renderProducts(filter='all'){
+  const grid=document.getElementById('productsGrid');
+  const filtered=filter==='all'?products:products.filter(p=>p.cat===filter);
+  grid.innerHTML=filtered.map(p=>`
+    <div class="product-card" data-cat="${p.cat}">
+      <div class="product-img-wrap">
+        ${p.tag?`<div class="product-tag ${p.tag}">${p.tag==='bestseller'?'Best Seller':p.tag==='new'?'New Arrival':'Sale'}</div>`:''}
+        <div class="product-wish-icon" onclick="toggleWish(this)"><i class="far fa-heart"></i></div>
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        <div class="product-actions">
+          <button class="prod-act-btn cart" onclick="addToCart({name:'${p.name}',price:${p.price},img:'${p.img}'})">Add to Cart</button>
+          <button class="prod-act-btn wish" onclick="toggleWish(this.closest('.product-card').querySelector('.product-wish-icon'))">Wishlist</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-rating">
+          <div class="stars">${'★'.repeat(Math.floor(p.rating))}${p.rating%1?'½':''}</div>
+          <span class="count">(${p.reviews})</span>
+        </div>
+        <div class="product-price-row">
+          <div class="product-price">$${p.price}${p.orig?`<span class="orig">$${p.orig}</span>`:''}</div>
+          <button class="add-cart-btn" onclick="addToCart({name:'${p.name}',price:${p.price},img:'${p.img}'})">
+            <i class="fas fa-cart-plus"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+renderProducts();
+
+function filterProducts(cat,btn){
+  document.querySelectorAll('.store-cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const grid=document.getElementById('productsGrid');
+  grid.style.opacity='0';
+  grid.style.transform='translateY(20px)';
+  setTimeout(()=>{
+    renderProducts(cat);
+    grid.style.transition='all 0.4s ease';
+    grid.style.opacity='1';
+    grid.style.transform='translateY(0)';
+  },200);
+}
+
+function toggleWish(el){
+  el.classList.toggle('active');
+  const icon=el.querySelector('i');
+  if(el.classList.contains('active')){
+    icon.classList.remove('far');icon.classList.add('fas');
+    showToast('Added to wishlist!');
+  } else {
+    icon.classList.remove('fas');icon.classList.add('far');
+  }
+}
+
+// ===================== CART =====================
+let cart=[];
+function addToCart(item){
+  const existing=cart.find(i=>i.name===item.name);
+  if(existing){existing.qty++;}
+  else{cart.push({...item,qty:1});}
+  updateCartUI();
+  showToast(`${item.name} added to cart!`);
+}
+function removeFromCart(idx){
+  cart.splice(idx,1);
+  updateCartUI();
+}
+function changeQty(idx,delta){
+  cart[idx].qty+=delta;
+  if(cart[idx].qty<=0)removeFromCart(idx);
+  else updateCartUI();
+}
+function updateCartUI(){
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent=count;
+  const total=cart.reduce((s,i)=>s+(i.price*i.qty),0);
+  document.getElementById('cartTotal').textContent='$'+total.toFixed(2);
+  document.getElementById('checkoutTotal').textContent='$'+total.toFixed(2);
+  const itemsEl=document.getElementById('cartItems');
+  if(cart.length===0){
+    itemsEl.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Your cart is empty</p></div>';
+  } else {
+    itemsEl.innerHTML=cart.map((item,i)=>`
+      <div class="cart-item">
+        <div class="cart-item-img"><img src="${item.img}" alt="${item.name}"></div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+          <div class="cart-item-qty">
+            <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+            <span class="qty-val">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+          </div>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart(${i})"><i class="fas fa-trash"></i></button>
+      </div>
+    `).join('');
+  }
+}
+function toggleCart(){
+  document.getElementById('cart-sidebar').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('show');
+}
+function openCheckout(){
+  if(cart.length===0){showToast('Your cart is empty!');return;}
+  document.getElementById('checkout-modal').classList.add('open');
+  document.getElementById('cart-sidebar').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('show');
+}
+function closeCheckout(){
+  document.getElementById('checkout-modal').classList.remove('open');
+}
+function submitOrder(){
+  cart=[];
+  updateCartUI();
+  closeCheckout();
+  showToast('Order placed successfully! Thank you!');
+}
+
+// ===================== TOAST =====================
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ===================== SMOOTH SCROLL =====================
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(e){
+    const target=document.querySelector(this.getAttribute('href'));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}
   });
-
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: .12 });
-  reveals.forEach(el => observer.observe(el));
-
-  // Filter tabs
-  function setFilter(btn) {
-    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  // Newsletter
-  function handleNewsletter(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.textContent = 'Thank you ✓';
-    btn.style.background = '#7A8C6E';
-    setTimeout(() => { btn.textContent = 'Subscribe'; btn.style.background = ''; }, 3000);
-  }
+});
 </script>
 </body>
 </html>
