@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCA — Considered Furniture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F4EFE6;
+    --warm-white: #FAF7F2;
+    --walnut: #2A1A0E;
+    --espresso: #3D2414;
+    --sand: #C9A97A;
+    --clay: #A0705A;
+    --sage: #7A8C6E;
+    --linen: #E8DFD0;
+    --charcoal: #4A3728;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--walnut);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ─── CURSOR ─── */
+  body { cursor: none; }
+  #cursor {
+    width: 10px; height: 10px;
+    background: var(--clay);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transition: transform .15s ease, background .2s;
+    mix-blend-mode: multiply;
+  }
+  #cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--clay);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transition: transform .35s cubic-bezier(.25,.46,.45,.94), opacity .2s;
+    opacity: .6;
+  }
+  a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2.5); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 48px;
+    transition: background .4s, padding .4s;
+  }
+  nav.scrolled {
+    background: rgba(244,239,230,.92);
+    backdrop-filter: blur(12px);
+    padding: 16px 48px;
+    border-bottom: 1px solid var(--linen);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 300; letter-spacing: .18em;
+    color: var(--walnut); text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--charcoal);
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    position: relative; padding-bottom: 2px;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 1px; background: var(--clay);
+    transition: width .3s ease;
+  }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .cart-btn {
+    background: none; border: 1px solid var(--charcoal);
+    color: var(--charcoal); padding: 10px 24px;
+    font-family: 'Jost', sans-serif; font-weight: 400;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    cursor: none; transition: background .25s, color .25s;
+  }
+  .cart-btn:hover { background: var(--walnut); color: var(--cream); border-color: var(--walnut); }
+
+  /* ─── HERO ─── */
+  .hero {
+    height: 100vh; min-height: 700px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 64px 80px;
+    background: var(--warm-white);
+    position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--clay); margin-bottom: 20px;
+    opacity: 0; animation: fadeUp .8s .3s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(62px, 8vw, 108px);
+    font-weight: 300; line-height: .92; letter-spacing: -.01em;
+    color: var(--walnut);
+    opacity: 0; animation: fadeUp .9s .5s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--clay); }
+  .hero-desc {
+    margin-top: 28px; max-width: 340px;
+    font-size: 14px; line-height: 1.8; color: var(--charcoal);
+    opacity: 0; animation: fadeUp .8s .7s forwards;
+  }
+  .hero-cta {
+    margin-top: 40px; display: flex; gap: 16px; align-items: center;
+    opacity: 0; animation: fadeUp .8s .9s forwards;
+  }
+  .btn-primary {
+    display: inline-block; background: var(--walnut); color: var(--cream);
+    padding: 15px 40px; text-decoration: none;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+    transition: background .25s, transform .2s;
+  }
+  .btn-primary:hover { background: var(--espresso); transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--charcoal);
+    font-size: 12px; letter-spacing: .1em;
+  }
+  .btn-ghost span { width: 40px; height: 1px; background: currentColor; }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+  }
+  .hero-img {
+    width: 100%; height: 100%; object-fit: cover;
+    transform: scale(1.08);
+    animation: heroZoom 1.4s .1s cubic-bezier(.25,.46,.45,.94) forwards;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, transparent 60%, rgba(42,26,14,.3));
+  }
+  .hero-badge {
+    position: absolute; bottom: 60px; left: -32px;
+    background: var(--sand); color: var(--walnut);
+    width: 120px; height: 120px; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    animation: spin 18s linear infinite;
+    z-index: 5;
+  }
+  .hero-badge-inner {
+    position: absolute; inset: 0;
+    animation: spin 18s linear infinite reverse;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .hero-badge-inner .num { font-size: 28px; font-weight: 600; line-height: 1; }
+  .hero-badge-inner .sub { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--charcoal);
+    opacity: 0; animation: fadeIn 1s 1.5s forwards;
+  }
+  .scroll-line {
+    width: 1px; height: 50px; background: var(--clay);
+    animation: scrollLine 1.5s 2s infinite;
+  }
+
+  /* ─── MARQUEE ─── */
+  .marquee-section {
+    background: var(--walnut); padding: 18px 0; overflow: hidden;
+  }
+  .marquee-track {
+    display: flex; gap: 60px; width: max-content;
+    animation: marquee 22s linear infinite;
+  }
+  .marquee-item {
+    display: flex; align-items: center; gap: 60px;
+    white-space: nowrap;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 300; letter-spacing: .1em;
+    color: var(--sand);
+  }
+  .marquee-dot { width: 5px; height: 5px; background: var(--clay); border-radius: 50%; flex-shrink: 0; }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-label {
+    font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--clay); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 300; line-height: 1.1;
+    color: var(--walnut);
+  }
+  .section-title em { font-style: italic; }
+
+  /* ─── COLLECTIONS ─── */
+  .collections { padding: 120px 64px; }
+  .collections-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 64px;
+  }
+  .view-all {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; color: var(--charcoal);
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  }
+  .view-all .arrow { transition: transform .25s; }
+  .view-all:hover .arrow { transform: translateX(6px); }
+
+  .collections-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 3px;
+  }
+  .col-card {
+    position: relative; overflow: hidden;
+    background: var(--linen);
+  }
+  .col-card:first-child {
+    grid-row: 1 / 3;
+  }
+  .col-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+    display: block;
+  }
+  .col-card:first-child img { min-height: 580px; }
+  .col-card:not(:first-child) img { min-height: 280px; }
+  .col-card:hover img { transform: scale(1.06); }
+  .col-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 28px 28px 24px;
+    background: linear-gradient(transparent, rgba(42,26,14,.75));
+    color: var(--cream); transform: translateY(8px);
+    transition: transform .3s;
+  }
+  .col-card:hover .col-info { transform: translateY(0); }
+  .col-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300; letter-spacing: .06em;
+    margin-bottom: 4px;
+  }
+  .col-count { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+
+  /* ─── FEATURED PRODUCT ─── */
+  .featured {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 600px; margin: 3px 0;
+  }
+  .featured-visual {
+    background: var(--linen); position: relative; overflow: hidden;
+  }
+  .featured-visual img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .8s ease;
+  }
+  .featured:hover .featured-visual img { transform: scale(1.04); }
+  .featured-tag {
+    position: absolute; top: 32px; left: 32px;
+    background: var(--sage); color: white;
+    font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+    padding: 6px 14px;
+  }
+  .featured-content {
+    background: var(--walnut); color: var(--cream);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px;
+  }
+  .featured-content .section-label { color: var(--sand); }
+  .featured-content .section-title { color: var(--cream); }
+  .featured-desc {
+    margin-top: 24px; font-size: 14px; line-height: 1.85;
+    color: rgba(244,239,230,.7); max-width: 360px;
+  }
+  .featured-price {
+    margin-top: 36px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 300; color: var(--sand);
+  }
+  .featured-actions { margin-top: 32px; display: flex; gap: 16px; }
+  .btn-sand {
+    background: var(--sand); color: var(--walnut);
+    padding: 14px 36px; text-decoration: none;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+    transition: background .25s;
+    border: none; font-family: 'Jost', sans-serif; cursor: none;
+  }
+  .btn-sand:hover { background: #D4B07A; }
+  .btn-outline-cream {
+    background: transparent; color: var(--cream);
+    border: 1px solid rgba(244,239,230,.35);
+    padding: 14px 30px; text-decoration: none;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    transition: border-color .25s, background .25s;
+    cursor: none; font-family: 'Jost', sans-serif;
+  }
+  .btn-outline-cream:hover { border-color: var(--cream); background: rgba(244,239,230,.08); }
+
+  /* ─── PRODUCTS ─── */
+  .products { padding: 120px 64px; background: var(--warm-white); }
+  .products-header { margin-bottom: 56px; }
+  .filter-tabs {
+    display: flex; gap: 4px; margin-top: 32px;
+  }
+  .filter-tab {
+    background: none; border: 1px solid transparent;
+    padding: 9px 22px; font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--charcoal); cursor: none; transition: all .25s;
+  }
+  .filter-tab.active { border-color: var(--walnut); background: var(--walnut); color: var(--cream); }
+  .filter-tab:hover:not(.active) { border-color: var(--linen); }
+
+  .products-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+  }
+  .product-card { background: var(--cream); }
+  .product-img {
+    position: relative; overflow: hidden; aspect-ratio: 3/4;
+    background: var(--linen);
+  }
+  .product-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+  }
+  .product-card:hover .product-img img { transform: scale(1.07); }
+  .product-img-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 24px;
+    opacity: 0; transition: opacity .3s;
+    background: rgba(42,26,14,.1);
+  }
+  .product-card:hover .product-img-overlay { opacity: 1; }
+  .quick-add {
+    background: var(--cream); color: var(--walnut);
+    border: none; padding: 12px 28px;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    cursor: none; transition: background .2s;
+    transform: translateY(6px); transition: transform .3s, opacity .3s;
+    opacity: 0;
+  }
+  .product-card:hover .quick-add { transform: translateY(0); opacity: 1; }
+  .quick-add:hover { background: var(--linen); }
+
+  .product-badge {
+    position: absolute; top: 16px; right: 16px;
+    background: var(--clay); color: white;
+    font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+    padding: 4px 10px;
+  }
+  .product-info { padding: 20px 20px 28px; }
+  .product-category {
+    font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--clay); margin-bottom: 6px;
+  }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 300; letter-spacing: .04em;
+    color: var(--walnut); margin-bottom: 10px;
+  }
+  .product-pricing { display: flex; align-items: baseline; gap: 12px; }
+  .product-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300; color: var(--walnut);
+  }
+  .product-old-price {
+    font-size: 14px; color: var(--clay); text-decoration: line-through; opacity: .6;
+  }
+  .product-rating {
+    display: flex; gap: 3px; margin-top: 10px;
+  }
+  .star { color: var(--sand); font-size: 12px; }
+
+  /* ─── CRAFT SECTION ─── */
+  .craft {
+    display: grid; grid-template-columns: 1fr 1fr;
+    background: var(--walnut); color: var(--cream);
+  }
+  .craft-visual {
+    position: relative; overflow: hidden; min-height: 560px;
+  }
+  .craft-visual img { width: 100%; height: 100%; object-fit: cover; opacity: .7; }
+  .craft-visual-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, transparent 40%, var(--walnut));
+  }
+  .craft-content {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 80px 80px 64px;
+  }
+  .craft-content .section-label { color: var(--sand); }
+  .craft-content .section-title { color: var(--cream); }
+  .craft-body {
+    margin-top: 28px; font-size: 14px; line-height: 1.9;
+    color: rgba(244,239,230,.65); max-width: 400px;
+  }
+  .craft-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    margin-top: 48px;
+  }
+  .craft-stat {}
+  .craft-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px; font-weight: 300; color: var(--sand); line-height: 1;
+  }
+  .craft-label {
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(244,239,230,.5); margin-top: 6px;
+  }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials { padding: 100px 64px; background: var(--cream); }
+  .testimonials-header { text-align: center; margin-bottom: 64px; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+  .testimonial-card {
+    background: var(--warm-white);
+    padding: 48px 40px;
+    position: relative; border-top: 2px solid var(--linen);
+    transition: border-color .3s;
+  }
+  .testimonial-card:hover { border-color: var(--sand); }
+  .quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px; font-weight: 300; color: var(--linen);
+    line-height: 1; position: absolute; top: 24px; left: 32px;
+  }
+  .testimonial-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; font-weight: 300; font-style: italic;
+    line-height: 1.7; color: var(--walnut);
+    margin-top: 24px; position: relative; z-index: 1;
+  }
+  .testimonial-author {
+    margin-top: 28px; display: flex; align-items: center; gap: 14px;
+  }
+  .author-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--linen); overflow: hidden; flex-shrink: 0;
+  }
+  .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .author-name {
+    font-size: 13px; font-weight: 500; letter-spacing: .06em; color: var(--walnut);
+  }
+  .author-location { font-size: 11px; letter-spacing: .1em; color: var(--clay); margin-top: 2px; }
+
+  /* ─── NEWSLETTER ─── */
+  .newsletter {
+    background: var(--sand); padding: 90px 64px;
+    display: flex; justify-content: space-between; align-items: center; gap: 48px;
+  }
+  .newsletter-left {}
+  .newsletter-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px); font-weight: 300;
+    color: var(--walnut); line-height: 1.1;
+  }
+  .newsletter-sub {
+    margin-top: 12px; font-size: 14px; color: var(--espresso); opacity: .75;
+  }
+  .newsletter-form {
+    display: flex; gap: 0; flex: 1; max-width: 440px;
+  }
+  .newsletter-input {
+    flex: 1; background: rgba(255,255,255,.5); border: 1px solid rgba(42,26,14,.2);
+    border-right: none; padding: 15px 20px;
+    font-family: 'Jost', sans-serif; font-size: 13px; color: var(--walnut);
+    outline: none;
+  }
+  .newsletter-input::placeholder { color: rgba(42,26,14,.4); }
+  .newsletter-input:focus { background: rgba(255,255,255,.8); }
+  .btn-walnut {
+    background: var(--walnut); color: var(--cream); border: none;
+    padding: 15px 28px; font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    cursor: none; transition: background .25s;
+  }
+  .btn-walnut:hover { background: var(--espresso); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--walnut); color: rgba(244,239,230,.6);
+    padding: 72px 64px 40px;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px; margin-bottom: 60px;
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300; letter-spacing: .18em;
+    color: var(--cream); margin-bottom: 18px;
+  }
+  .footer-tagline { font-size: 13px; line-height: 1.8; max-width: 240px; }
+  .footer-socials { display: flex; gap: 16px; margin-top: 28px; }
+  .social-btn {
+    width: 38px; height: 38px; border: 1px solid rgba(244,239,230,.2);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(244,239,230,.6); text-decoration: none; font-size: 13px;
+    transition: border-color .25s, color .25s;
+  }
+  .social-btn:hover { border-color: var(--sand); color: var(--sand); }
+  .footer-col h4 {
+    font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--cream); margin-bottom: 20px; font-weight: 400;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+  .footer-col ul a {
+    text-decoration: none; color: rgba(244,239,230,.5);
+    font-size: 13px; transition: color .25s;
+  }
+  .footer-col ul a:hover { color: var(--sand); }
+  .footer-bottom {
+    border-top: 1px solid rgba(244,239,230,.1);
+    padding-top: 28px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px;
+  }
+  .footer-legal { display: flex; gap: 24px; }
+  .footer-legal a {
+    text-decoration: none; color: rgba(244,239,230,.4);
+    transition: color .25s; font-size: 11px; letter-spacing: .08em;
+  }
+  .footer-legal a:hover { color: var(--sand); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.08); } to { transform: scale(1); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); } to { transform: translateX(-50%); }
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); } to { transform: rotate(360deg); }
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0; transform: translateY(36px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .22s; }
+  .reveal-delay-3 { transition-delay: .34s; }
+  .reveal-delay-4 { transition-delay: .46s; }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">ARCA</a>
+  <ul class="nav-links">
+    <li><a href="#">Collections</a></li>
+    <li><a href="#">Living Room</a></li>
+    <li><a href="#">Bedroom</a></li>
+    <li><a href="#">Dining</a></li>
+    <li><a href="#">Outdoor</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn">Cart (0)</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">New Collection — Spring 2025</p>
+    <h1 class="hero-title">Furniture<br>that <em>endures</em></h1>
+    <p class="hero-desc">Pieces made with purpose. Designed for the way you live — calm, considered, and lasting for decades.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn-primary">Explore Now</a>
+      <a href="#" class="btn-ghost"><span></span> Our Story</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80" alt="Modern living room with warm tones">
+    <div class="hero-overlay"></div>
+    <div class="hero-badge">
+      <div class="hero-badge-inner">
+        <span class="num">12</span>
+        <span class="sub">years craft</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marquee">
+    <div class="marquee-item">Solid Oak <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Handcrafted <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Sustainably Sourced <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Free Delivery <div class="marquee-dot"></div></div>
+    <div class="marquee-item">10-Year Warranty <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Made to Order <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Solid Oak <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Handcrafted <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Sustainably Sourced <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Free Delivery <div class="marquee-dot"></div></div>
+    <div class="marquee-item">10-Year Warranty <div class="marquee-dot"></div></div>
+    <div class="marquee-item">Made to Order <div class="marquee-dot"></div></div>
+  </div>
+</div>
+
+<!-- COLLECTIONS -->
+<section class="collections">
+  <div class="collections-header reveal">
+    <div>
+      <p class="section-label">Browse by room</p>
+      <h2 class="section-title">Our <em>Collections</em></h2>
+    </div>
+    <a href="#" class="view-all">View all <span class="arrow">→</span></a>
+  </div>
+  <div class="collections-grid">
+    <div class="col-card reveal">
+      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80" alt="Living Room">
+      <div class="col-info">
+        <p class="col-name">Living Room</p>
+        <p class="col-count">48 pieces</p>
+      </div>
+    </div>
+    <div class="col-card reveal reveal-delay-1">
+      <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=80" alt="Bedroom">
+      <div class="col-info">
+        <p class="col-name">Bedroom</p>
+        <p class="col-count">32 pieces</p>
+      </div>
+    </div>
+    <div class="col-card reveal reveal-delay-2">
+      <img src="https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=600&q=80" alt="Outdoor">
+      <div class="col-info">
+        <p class="col-name">Outdoor</p>
+        <p class="col-count">21 pieces</p>
+      </div>
+    </div>
+    <div class="col-card reveal reveal-delay-1">
+      <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Dining">
+      <div class="col-info">
+        <p class="col-name">Dining</p>
+        <p class="col-count">29 pieces</p>
+      </div>
+    </div>
+    <div class="col-card reveal reveal-delay-2">
+      <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80" alt="Office">
+      <div class="col-info">
+        <p class="col-name">Office</p>
+        <p class="col-count">17 pieces</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCT -->
+<div class="featured reveal">
+  <div class="featured-visual">
+    <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=900&q=80" alt="Wren Lounge Chair">
+    <div class="featured-tag">New Arrival</div>
+  </div>
+  <div class="featured-content">
+    <p class="section-label">Featured Piece</p>
+    <h2 class="section-title">Wren<br><em>Lounge Chair</em></h2>
+    <p class="featured-desc">Carved from a single arc of solid white oak, the Wren cradles you in curves worn smooth by hand. Available in natural, smoked, and ebonised finishes.</p>
+    <div class="featured-price">₹1,24,000</div>
+    <div class="featured-actions">
+      <button class="btn-sand">Add to Cart</button>
+      <a href="#" class="btn-outline-cream">Learn More</a>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products">
+  <div class="products-header reveal">
+    <p class="section-label">Handpicked for you</p>
+    <h2 class="section-title">Best <em>Sellers</em></h2>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setFilter(this)">All</button>
+      <button class="filter-tab" onclick="setFilter(this)">Seating</button>
+      <button class="filter-tab" onclick="setFilter(this)">Tables</button>
+      <button class="filter-tab" onclick="setFilter(this)">Storage</button>
+      <button class="filter-tab" onclick="setFilter(this)">Lighting</button>
+    </div>
+  </div>
+  <div class="products-grid">
+    <div class="product-card reveal">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&q=80" alt="Oslo Sofa">
+        <div class="product-badge">Best Seller</div>
+        <div class="product-img-overlay"><button class="quick-add">Quick Add</button></div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Seating</p>
+        <p class="product-name">Oslo Three-Seater</p>
+        <div class="product-pricing">
+          <span class="product-price">₹2,18,000</span>
+          <span class="product-old-price">₹2,60,000</span>
+        </div>
+        <div class="product-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="opacity:.35">★</span></div>
+      </div>
+    </div>
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1549497538-303791108f95?w=500&q=80" alt="Cove Dining Table">
+        <div class="product-img-overlay"><button class="quick-add">Quick Add</button></div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Tables</p>
+        <p class="product-name">Cove Dining Table</p>
+        <div class="product-pricing">
+          <span class="product-price">₹1,85,000</span>
+        </div>
+        <div class="product-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+    </div>
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=500&q=80" alt="Mira Shelving">
+        <div class="product-badge">New</div>
+        <div class="product-img-overlay"><button class="quick-add">Quick Add</button></div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Storage</p>
+        <p class="product-name">Mira Wall Shelf</p>
+        <div class="product-pricing">
+          <span class="product-price">₹46,500</span>
+        </div>
+        <div class="product-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="opacity:.35">★</span></div>
+      </div>
+    </div>
+    <div class="product-card reveal reveal-delay-3">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&q=80" alt="Wren Chair">
+        <div class="product-img-overlay"><button class="quick-add">Quick Add</button></div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Seating</p>
+        <p class="product-name">Wren Lounge Chair</p>
+        <div class="product-pricing">
+          <span class="product-price">₹1,24,000</span>
+        </div>
+        <div class="product-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRAFTSMANSHIP -->
+<div class="craft reveal">
+  <div class="craft-visual">
+    <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=900&q=80" alt="Craftsman at work">
+    <div class="craft-visual-overlay"></div>
+  </div>
+  <div class="craft-content">
+    <p class="section-label">Our Philosophy</p>
+    <h2 class="section-title">Built by<br><em>hand. Built</em><br>to last.</h2>
+    <p class="craft-body">Every ARCA piece begins as a conversation between maker and material. Our craftspeople work with sustainably forested hardwoods, taking time to understand the grain before a single cut is made. The result is furniture that improves with age.</p>
+    <div class="craft-stats">
+      <div class="craft-stat">
+        <div class="craft-num">4,200+</div>
+        <div class="craft-label">Homes furnished</div>
+      </div>
+      <div class="craft-stat">
+        <div class="craft-num">100%</div>
+        <div class="craft-label">Solid hardwood</div>
+      </div>
+      <div class="craft-stat">
+        <div class="craft-num">12</div>
+        <div class="craft-label">Years of craft</div>
+      </div>
+      <div class="craft-stat">
+        <div class="craft-num">48</div>
+        <div class="craft-label">Skilled artisans</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-header reveal">
+    <p class="section-label">What people say</p>
+    <h2 class="section-title">Loved by <em>homeowners</em></h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <div class="quote-mark">"</div>
+      <p class="testimonial-text">The Oslo sofa arrived and it immediately transformed our living room. The craftsmanship is extraordinary — you can feel the weight and quality the moment you sit down.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar"><img src="https://i.pravatar.cc/100?img=47" alt="Priya Mehta"></div>
+        <div>
+          <p class="author-name">Priya Mehta</p>
+          <p class="author-location">Mumbai, India</p>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-1">
+      <div class="quote-mark">"</div>
+      <p class="testimonial-text">I've bought furniture from all over the world and ARCA is genuinely in a different class. The Cove dining table is the piece our entire home revolves around now.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar"><img src="https://i.pravatar.cc/100?img=12" alt="Arjun Sharma"></div>
+        <div>
+          <p class="author-name">Arjun Sharma</p>
+          <p class="author-location">Bangalore, India</p>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="quote-mark">"</div>
+      <p class="testimonial-text">Three years in and the oak only looks better. There's something deeply satisfying about owning something that's built to outlast trends — and probably outlast me.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar"><img src="https://i.pravatar.cc/100?img=33" alt="Kavita Nair"></div>
+        <div>
+          <p class="author-name">Kavita Nair</p>
+          <p class="author-location">Delhi, India</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter reveal">
+  <div class="newsletter-left">
+    <h2 class="newsletter-title">Join the<br>inner circle</h2>
+    <p class="newsletter-sub">Early access, new arrivals, care guides.</p>
+  </div>
+  <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+    <input class="newsletter-input" type="email" placeholder="Your email address">
+    <button type="submit" class="btn-walnut">Subscribe</button>
+  </form>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">ARCA</div>
+      <p class="footer-tagline">Furniture made with considered craft, for homes that hold their stories.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">ig</a>
+        <a href="#" class="social-btn">pi</a>
+        <a href="#" class="social-btn">yt</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Collections</h4>
+      <ul>
+        <li><a href="#">Living Room</a></li>
+        <li><a href="#">Bedroom</a></li>
+        <li><a href="#">Dining</a></li>
+        <li><a href="#">Outdoor</a></li>
+        <li><a href="#">Office</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About ARCA</a></li>
+        <li><a href="#">Our Craftspeople</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Showrooms</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Delivery & Returns</a></li>
+        <li><a href="#">Care Guide</a></li>
+        <li><a href="#">Trade Programme</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 ARCA. All rights reserved.</span>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Cookie Settings</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = -100, my = -100, rx = -100, ry = -100;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+  });
+
+  (function animateRing() {
+    rx += (mx - rx) * .12;
+    ry += (my - ry) * .12;
+    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+    requestAnimationFrame(animateRing);
+  })();
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: .12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Filter tabs
+  function setFilter(btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Newsletter
+  function handleNewsletter(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'Thank you ✓';
+    btn.style.background = '#7A8C6E';
+    setTimeout(() => { btn.textContent = 'Subscribe'; btn.style.background = ''; }, 3000);
+  }
+</script>
+</body>
+</html>
