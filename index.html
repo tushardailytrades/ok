@@ -577,6 +577,179 @@
   .reveal-delay-2 { transition-delay: .22s; }
   .reveal-delay-3 { transition-delay: .34s; }
   .reveal-delay-4 { transition-delay: .46s; }
+
+  /* ─── HAMBURGER ─── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 200;
+    width: 32px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--walnut);
+    transition: transform .3s ease, opacity .3s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* ─── MOBILE NAV OVERLAY ─── */
+  .mobile-nav {
+    position: fixed; inset: 0;
+    background: var(--cream);
+    z-index: 150;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 28px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s ease;
+  }
+  .mobile-nav.open { opacity: 1; pointer-events: all; }
+  .mobile-nav a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 7vw, 40px);
+    font-weight: 300; letter-spacing: .06em;
+    color: var(--walnut); text-decoration: none;
+    transition: color .2s;
+  }
+  .mobile-nav a:hover { color: var(--clay); }
+  .mobile-nav .cart-btn { margin-top: 8px; cursor: pointer; font-size: 12px; }
+
+  /* ─── TOUCH DEVICES ─── */
+  @media (hover: none) {
+    body { cursor: auto; }
+    #cursor, #cursor-ring { display: none; }
+    button, a { cursor: pointer; }
+    .cart-btn, .btn-sand, .btn-walnut, .filter-tab, .quick-add, .btn-primary { cursor: pointer; }
+  }
+
+  /* ─── TABLET (≤ 900px) ─── */
+  @media (max-width: 900px) {
+    .nav-links, .nav-right { display: none; }
+    .hamburger { display: flex; }
+
+    .hero-badge { left: 16px; }
+
+    .collections { padding: 80px 40px; }
+    .collections-header { margin-bottom: 48px; }
+    .collections-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+    .col-card:first-child { grid-row: auto; }
+    .col-card:first-child img,
+    .col-card:not(:first-child) img { min-height: 240px; }
+
+    .featured { grid-template-columns: 1fr; }
+    .featured-content { padding: 60px 48px; }
+
+    .products { padding: 80px 40px; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .craft { grid-template-columns: 1fr; }
+    .craft-visual { min-height: 400px; }
+    .craft-visual-overlay { background: linear-gradient(to bottom, transparent 50%, var(--walnut)); }
+    .craft-content { padding: 64px 48px; }
+
+    .testimonials { padding: 80px 40px; }
+    .testimonials-grid { grid-template-columns: 1fr; gap: 3px; }
+
+    .newsletter { padding: 72px 40px; flex-direction: column; align-items: flex-start; gap: 36px; }
+    .newsletter-form { max-width: 100%; width: 100%; }
+
+    footer { padding: 64px 40px 36px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  }
+
+  /* ─── MOBILE (≤ 600px) ─── */
+  @media (max-width: 600px) {
+    nav { padding: 18px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      height: auto;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-left {
+      padding: 100px 24px 52px;
+      flex-shrink: 0;
+    }
+    .hero-right {
+      flex: 1;
+      min-height: 260px;
+    }
+    .hero-desc { max-width: 100%; }
+    .hero-badge { left: 16px; bottom: 20px; width: 90px; height: 90px; }
+    .hero-badge-inner .num { font-size: 20px; }
+    .hero-badge-inner .sub { font-size: 9px; }
+    .hero-scroll { display: none; }
+
+    .collections { padding: 56px 20px; }
+    .collections-header { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 36px; }
+    .collections-grid { grid-template-columns: 1fr; gap: 3px; }
+    .col-card:first-child img { min-height: 280px; }
+    .col-card:not(:first-child) img { min-height: 220px; }
+
+    .featured { display: flex; flex-direction: column; }
+    .featured-visual { min-height: 280px; }
+    .featured-content { padding: 44px 24px; }
+    .featured-price { font-size: 34px; }
+    .featured-actions { flex-wrap: wrap; gap: 12px; }
+    .btn-sand, .btn-outline-cream { width: 100%; text-align: center; }
+
+    .products { padding: 56px 20px; }
+    .products-header { margin-bottom: 40px; }
+    .filter-tabs { flex-wrap: wrap; gap: 6px 4px; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
+    .product-info { padding: 14px 14px 20px; }
+    .product-name { font-size: 16px; }
+    .product-price { font-size: 18px; }
+
+    .craft { display: flex; flex-direction: column; }
+    .craft-visual { min-height: 260px; }
+    .craft-content { padding: 48px 24px; }
+    .craft-body { max-width: 100%; }
+    .craft-stats { grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 36px; }
+    .craft-num { font-size: 36px; }
+
+    .testimonials { padding: 56px 20px; }
+    .testimonial-card { padding: 36px 24px; }
+    .testimonial-text { font-size: 17px; }
+
+    .newsletter { padding: 56px 20px; }
+    .newsletter-form { flex-direction: column; }
+    .newsletter-input {
+      border-right: 1px solid rgba(42,26,14,.2);
+      border-bottom: none;
+    }
+    .btn-walnut { width: 100%; padding: 14px; }
+
+    footer { padding: 48px 20px 28px; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 14px; text-align: center; }
+    .footer-legal { flex-wrap: wrap; justify-content: center; gap: 12px 20px; }
+  }
+
+  /* ─── EXTRA SMALL (≤ 380px) ─── */
+  @media (max-width: 380px) {
+    .hero-left { padding: 90px 20px 44px; }
+    .hero-title { font-size: 52px; }
+    .products-grid { grid-template-columns: 1fr; }
+    .craft-stats { grid-template-columns: 1fr 1fr; }
+    .featured-actions { flex-direction: column; }
+  }
 </style>
 </head>
 <body>
@@ -597,7 +770,19 @@
   <div class="nav-right">
     <button class="cart-btn">Cart (0)</button>
   </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+  <a href="#" onclick="closeMobileNav()">Collections</a>
+  <a href="#" onclick="closeMobileNav()">Living Room</a>
+  <a href="#" onclick="closeMobileNav()">Bedroom</a>
+  <a href="#" onclick="closeMobileNav()">Dining</a>
+  <a href="#" onclick="closeMobileNav()">Outdoor</a>
+  <button class="cart-btn" onclick="closeMobileNav()">Cart (0)</button>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -927,6 +1112,26 @@
 </footer>
 
 <script>
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+    mobileNav.setAttribute('aria-hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileNav.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
   // Custom cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursor-ring');
